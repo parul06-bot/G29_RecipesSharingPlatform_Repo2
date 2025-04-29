@@ -1,0 +1,626 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Feedback - Crazy Bites{% endblock %}
+
+{% block extra_css %}
+<style>
+    .feedback-section {
+        background: white;
+        min-height: 100vh;
+        padding: 4rem 0;
+    }
+
+    .feedback-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 2rem;
+        margin: 2rem auto;
+        max-width: 800px;
+    }
+
+    .star-rating {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+    }
+
+    .star {
+        font-size: 2.5rem;
+        color: #ddd;
+        cursor: pointer;
+        transition: color 0.2s;
+        margin: 0 0.5rem;
+    }
+
+    .star:hover,
+    .star.active {
+        color: #f39c12;
+    }
+
+    .feedback-form .form-control {
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border: 2px solid #eee;
+        transition: all 0.3s;
+    }
+
+    .feedback-form .form-control:focus {
+        border-color: #f39c12;
+        box-shadow: 0 0 0 0.2rem rgba(243, 156, 18, 0.25);
+    }
+
+    .btn-submit {
+        background: #f39c12;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        border: none;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-submit:hover {
+        background: #e67e22;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+    }
+
+    .feedback-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        display: block;
+    }
+
+    .feedback-header .title {
+        color: #2c3e50;
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .feedback-header .subtitle {
+        color: #7f8c8d;
+        font-size: 1.2rem;
+    }
+
+    .success-message {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+        background: #2ecc71;
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+
+    .error-message {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+        background: #e74c3c;
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+
+    .form-select {
+        appearance: auto !important;
+        -webkit-appearance: auto !important;
+        -moz-appearance: auto !important;
+        padding: 10px;
+        width: 100%;
+        border: 2px solid #eee;
+        border-radius: 10px;
+        font-size: 1rem;
+        color: #2c3e50;
+        background-color: white;
+        cursor: pointer;
+    }
+
+    .form-select:focus {
+        outline: none;
+        border-color: #f39c12;
+        box-shadow: 0 0 0 0.2rem rgba(243, 156, 18, 0.25);
+    }
+
+    .form-select optgroup {
+        font-weight: bold;
+        color: #2c3e50;
+        background-color: #f8f9fa;
+        padding: 8px;
+    }
+
+    .form-select option {
+        padding: 8px;
+        color: #2c3e50;
+        background-color: white;
+    }
+
+    .form-select option:hover {
+        background-color: #f39c12;
+        color: white;
+    }
+
+    .feedback-type {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        gap: 1rem;
+    }
+
+    .feedback-type-option {
+        flex: 1;
+        padding: 1rem;
+        border: 2px solid #eee;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+    }
+
+    .feedback-type-option:hover {
+        border-color: #f39c12;
+        background-color: rgba(243, 156, 18, 0.05);
+    }
+
+    .feedback-type-option.active {
+        border-color: #f39c12;
+        background-color: rgba(243, 156, 18, 0.1);
+    }
+
+    .feedback-type-option i {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: #7f8c8d;
+    }
+
+    .feedback-type-option.active i {
+        color: #f39c12;
+    }
+
+    .feedback-type-option span {
+        display: block;
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    .recipe-select {
+        margin-bottom: 1.5rem;
+    }
+
+    .feedback-table {
+        margin-top: 3rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 2rem;
+    }
+
+    .feedback-table h2 {
+        color: #2c3e50;
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .feedback-item {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+        transition: all 0.3s;
+    }
+
+    .feedback-item:hover {
+        background-color: rgba(243, 156, 18, 0.05);
+    }
+
+    .feedback-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: rgba(243, 156, 18, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .feedback-icon i {
+        font-size: 1.5rem;
+        color: #f39c12;
+    }
+
+    .feedback-content {
+        flex-grow: 1;
+    }
+
+    .feedback-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .feedback-name {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .feedback-date {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    .feedback-message {
+        color: #34495e;
+        margin-bottom: 0.5rem;
+    }
+
+    .feedback-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .feedback-rating {
+        color: #f39c12;
+    }
+
+    .feedback-type {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .feedback-type.suggestion {
+        background-color: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+    }
+
+    .feedback-type.complaint {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+    }
+
+    .feedback-type.praise {
+        background-color: rgba(46, 204, 113, 0.1);
+        color: #2ecc71;
+    }
+
+    .no-feedback {
+        text-align: center;
+        padding: 2rem;
+        color: #7f8c8d;
+    }
+
+    .no-feedback i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #ddd;
+    }
+
+    .input-group .form-control {
+        border-radius: 10px;
+        border: 2px solid #eee;
+    }
+
+    .input-group .form-control:focus {
+        border-color: #f39c12;
+        box-shadow: 0 0 0 0.2rem rgba(243, 156, 18, 0.25);
+    }
+
+    .form-group label {
+        color: #2c3e50;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-group label i {
+        color: #f39c12;
+    }
+
+    .custom-select {
+        font-size: 1rem;
+        padding: 0.8rem;
+        border-radius: 10px;
+        border: 2px solid #eee;
+        transition: all 0.3s;
+    }
+
+    .custom-select:focus {
+        border-color: #f39c12;
+        box-shadow: 0 0 0 0.2rem rgba(243, 156, 18, 0.25);
+    }
+
+    .custom-select optgroup {
+        font-weight: bold;
+        font-size: 1.1rem;
+        padding: 10px;
+    }
+
+    .custom-select option {
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    .custom-select option:hover {
+        background-color: #f39c12;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Debug output -->
+<div style="display: none;">
+    <p>Total recipes: {{ recipes|length }}</p>
+    {% for recipe in recipes %}
+        <p>{{ recipe.title }} - {{ recipe.cuisine }}</p>
+    {% endfor %}
+</div>
+
+<section class="feedback-section">
+    <div class="container">
+        <div class="feedback-card">
+            <h1 style="text-align: center; color: #2c3e50; font-family: 'Playfair Display', serif; margin-bottom: 1rem;">Share Your Feedback</h1>
+            <p style="text-align: center; color: #7f8c8d; font-size: 1.2rem; margin-bottom: 2rem;">We value your opinion and would love to hear from you!</p>
+
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle fa-3x mb-3"></i>
+                <h3>Thank You!</h3>
+                <p>Your feedback has been submitted successfully.</p>
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle fa-3x mb-3"></i>
+                <h3>Oops!</h3>
+                <p>Something went wrong. Please try again.</p>
+            </div>
+
+            <form class="feedback-form" method="POST" action="{% url 'submit_feedback' %}">
+                {% csrf_token %}
+                
+                <!-- User Information -->
+                <div class="mb-3">
+                    <label for="name" class="form-label"><i class="fas fa-user me-2" style="color: #f39c12;"></i>Your Name</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="name" name="name" value="{{ user.username }}" {% if user.is_authenticated %}readonly{% endif %} required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label"><i class="fas fa-envelope me-2" style="color: #f39c12;"></i>Your Email</label>
+                    <div class="input-group">
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" {% if user.is_authenticated %}readonly{% endif %} required>
+                    </div>
+                </div>
+
+                <!-- Recipe Selection -->
+                <div class="recipe-select">
+                    <label for="recipe" class="form-label">
+                        <i class="fas fa-utensils me-2" style="color: #f39c12;"></i>Select a Cuisine
+                    </label>
+                    <select class="form-select" name="recipe" id="recipe" required>
+                        <option value="" selected disabled>Select a cuisine 🍽️</option>
+                        <option value="indian">Indian Cuisine 🇮🇳</option>
+                        <option value="chinese">Chinese Cuisine 🇨🇳</option>
+                        <option value="mexican">Mexican Cuisine 🇲🇽</option>
+                        <option value="italian">Italian Cuisine 🇮🇹</option>
+                    </select>
+                </div>
+
+                <!-- Rating -->
+                <div class="star-rating">
+                    <span class="star" data-rating="1">★</span>
+                    <span class="star" data-rating="2">★</span>
+                    <span class="star" data-rating="3">★</span>
+                    <span class="star" data-rating="4">★</span>
+                    <span class="star" data-rating="5">★</span>
+                    <input type="hidden" name="rating" id="rating" required>
+                </div>
+
+                <!-- Feedback Type -->
+                <div class="feedback-type">
+                    <div class="feedback-type-option" data-type="general">
+                        <i class="fas fa-comment"></i>
+                        <span>General</span>
+                    </div>
+                    <div class="feedback-type-option" data-type="recipe">
+                        <i class="fas fa-utensils"></i>
+                        <span>Recipe</span>
+                    </div>
+                    <div class="feedback-type-option" data-type="suggestion">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Suggestion</span>
+                    </div>
+                </div>
+                <input type="hidden" name="feedback_type" id="feedbackType" value="">
+
+                <!-- Message -->
+                <div class="mb-3">
+                    <label for="message" class="form-label"><i class="fas fa-comment-alt me-2" style="color: #f39c12;"></i>Your Feedback</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-submit">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Feedback
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="feedback-table">
+            <h2>Recent Feedback</h2>
+            {% if feedbacks %}
+                {% for feedback in feedbacks %}
+                <div class="feedback-item">
+                    <div class="feedback-icon">
+                        <i class="fas {{ feedback.get_icon }}"></i>
+                    </div>
+                    <div class="feedback-content">
+                        <div class="feedback-header">
+                            <span class="feedback-name">{{ feedback.name }}</span>
+                            <span class="feedback-date">{{ feedback.created_at|date:"F j, Y" }}</span>
+                        </div>
+                        <div class="feedback-message">{{ feedback.message }}</div>
+                        <div class="feedback-meta">
+                            <div class="feedback-rating">
+                                {% for i in "12345"|make_list %}
+                                    <i class="fas fa-star{% if forloop.counter <= feedback.rating %} active{% endif %}"></i>
+                                {% endfor %}
+                            </div>
+                            <span class="feedback-type {{ feedback.feedback_type }}">
+                                {{ feedback.get_feedback_type_display }}
+                            </span>
+                            {% if feedback.recipe %}
+                            <span class="feedback-recipe">
+                                <i class="fas fa-utensils"></i> {{ feedback.recipe.title }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-feedback">
+                    <i class="fas fa-comment-slash"></i>
+                    <p>No feedback submitted yet. Be the first to share your thoughts!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.feedback-form');
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.getElementById('rating');
+        const feedbackTypeOptions = document.querySelectorAll('.feedback-type-option');
+        const feedbackTypeInput = document.getElementById('feedbackType');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Star rating
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = this.getAttribute('data-rating');
+                ratingInput.value = rating;
+                stars.forEach(s => {
+                    if (s.getAttribute('data-rating') <= rating) {
+                        s.classList.add('active');
+                        s.style.color = '#f39c12';
+                    } else {
+                        s.classList.remove('active');
+                        s.style.color = '#ddd';
+                    }
+                });
+            });
+        });
+
+        // Feedback type
+        feedbackTypeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                feedbackTypeOptions.forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                feedbackTypeInput.value = this.getAttribute('data-type');
+            });
+        });
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic validation
+            if (!ratingInput.value) {
+                errorMessage.style.display = 'block';
+                errorMessage.querySelector('p').textContent = 'Please select a rating';
+                return;
+            }
+
+            if (!feedbackTypeInput.value) {
+                errorMessage.style.display = 'block';
+                errorMessage.querySelector('p').textContent = 'Please select a feedback type';
+                return;
+            }
+
+            const formData = new FormData(this);
+
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            submitBtn.disabled = true;
+
+            fetch('{% url "submit_feedback" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    
+                    // Reset form
+                    form.reset();
+                    stars.forEach(s => {
+                        s.classList.remove('active');
+                        s.style.color = '#ddd';
+                    });
+                    ratingInput.value = '';
+                    feedbackTypeOptions.forEach(opt => opt.classList.remove('active'));
+                    feedbackTypeInput.value = '';
+
+                    // Reload page after delay
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    // Show error message
+                    errorMessage.style.display = 'block';
+                    errorMessage.querySelector('p').textContent = data.message || 'Failed to submit feedback';
+                    successMessage.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                // Show error message
+                errorMessage.style.display = 'block';
+                errorMessage.querySelector('p').textContent = 'An error occurred. Please try again.';
+                successMessage.style.display = 'none';
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Hide messages after 3 seconds
+        [successMessage, errorMessage].forEach(message => {
+            if (message.style.display === 'block') {
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 3000);
+            }
+        });
+    });
+</script>
+{% endblock %}

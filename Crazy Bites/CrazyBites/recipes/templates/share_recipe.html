@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Share Recipe - Crazy Bites{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="share-recipe-card">
+        <h2 class="text-center mb-4">Share Your Recipe</h2>
+        <form method="POST" enctype="multipart/form-data" class="share-recipe-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}">Recipe Title</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="error-message">{{ form.title.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.description.id_for_label }}">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="error-message">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.ingredients.id_for_label }}">Ingredients</label>
+                {{ form.ingredients }}
+                {% if form.ingredients.errors %}
+                    <div class="error-message">{{ form.ingredients.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.instructions.id_for_label }}">Instructions</label>
+                {{ form.instructions }}
+                {% if form.instructions.errors %}
+                    <div class="error-message">{{ form.instructions.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="{{ form.cuisine.id_for_label }}">Cuisine</label>
+                    {{ form.cuisine }}
+                    {% if form.cuisine.errors %}
+                        <div class="error-message">{{ form.cuisine.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="{{ form.meal_type.id_for_label }}">Meal Type</label>
+                    {{ form.meal_type }}
+                    {% if form.meal_type.errors %}
+                        <div class="error-message">{{ form.meal_type.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Recipe Image</label>
+                <div class="image-upload-section">
+                    <div class="upload-option">
+                        <label for="{{ form.image.id_for_label }}" class="upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Upload Image</span>
+                            {{ form.image }}
+                        </label>
+                        <small class="text-muted">Max file size: 5MB</small>
+                    </div>
+                    <div class="or-divider">
+                        <span>OR</span>
+                    </div>
+                    <div class="url-option">
+                        <label for="{{ form.image_url.id_for_label }}">Image URL</label>
+                        {{ form.image_url }}
+                        {% if form.image_url.errors %}
+                            <div class="error-message">{{ form.image_url.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary btn-lg">Share Recipe</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .share-recipe-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+        padding: 2rem;
+        margin: 2rem auto;
+        max-width: 800px;
+    }
+
+    .share-recipe-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.25rem rgba(243, 156, 18, 0.15);
+    }
+
+    .image-upload-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+
+    .upload-option {
+        text-align: center;
+    }
+
+    .upload-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        padding: 1rem;
+        border: 2px dashed #e9ecef;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .upload-label:hover {
+        border-color: var(--accent-color);
+        background: rgba(243, 156, 18, 0.05);
+    }
+
+    .upload-label i {
+        font-size: 2rem;
+        color: var(--accent-color);
+    }
+
+    .or-divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #6c757d;
+    }
+
+    .or-divider::before,
+    .or-divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .or-divider span {
+        padding: 0 1rem;
+    }
+
+    .url-option {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+
+    .btn-primary {
+        background: var(--gradient-dark);
+        border: none;
+        padding: 1rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .share-recipe-card {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+
+        .form-row {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %} 

@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Crazy Bites - Culinary Excellence</title>
+      <link rel="shortcut icon" href="{% static 'images/Logo.jfif' %}" type="image/x-icon" />
+      <!-- Bootstrap CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+      <!-- Font Awesome -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+      <!-- Google Fonts -->
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+      <style>
+         :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #f39c12;
+            --text-color: #2c3e50;
+            --light-bg: #f8f9fa;
+            --dark-bg: #1a252f;
+            --nav-bg: #1a252f;
+            --footer-bg: #1a252f;
+            --gradient-dark: linear-gradient(135deg, #1a252f, #2c3e50);
+         }
+
+         body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+         }
+
+         h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+         }
+
+         .navbar {
+            background: var(--gradient-dark) !important;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+         }
+
+         .navbar.scrolled {
+            padding: 0.5rem 0;
+            background: var(--gradient-dark) !important;
+            backdrop-filter: blur(10px);
+         }
+
+         .navbar-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white !important;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+         }
+
+         .navbar-brand img {
+            height: 45px;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+         }
+
+         .navbar-brand:hover img {
+            transform: scale(1.05);
+         }
+
+         .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            transition: all 0.3s ease;
+            position: relative;
+         }
+
+         .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+         }
+
+         .nav-link:hover::after {
+            width: 80%;
+         }
+
+         .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            animation: fadeIn 0.3s ease;
+         }
+
+         .dropdown-menu {
+            background: var(--gradient-dark);
+            border: none;
+            border-radius: 8px;
+            margin-top: 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+         }
+
+         .dropdown-item {
+            color: rgba(255,255,255,0.9);
+            padding: 0.7rem 1.5rem;
+            transition: all 0.3s ease;
+         }
+
+         .dropdown-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            transform: translateX(5px);
+         }
+
+         @keyframes fadeIn {
+            from {
+               opacity: 0;
+               transform: translateY(-10px);
+            }
+            to {
+               opacity: 1;
+               transform: translateY(0);
+            }
+         }
+
+         .btn-primary {
+            background-color: var(--accent-color);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+         }
+
+         .btn-primary:hover {
+            background-color: #d68910;
+            transform: translateY(-2px);
+         }
+
+         .btn-share {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+         }
+
+         .btn-share:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+         }
+
+         .hero-section {
+            position: relative;
+            height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+         }
+
+         .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+         }
+
+         .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease;
+         }
+
+         .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s;
+         }
+
+         .featured-section {
+            padding: 5rem 0;
+            background-color: var(--light-bg);
+         }
+
+         .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+         }
+
+         .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+         }
+
+         .section-title p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+         }
+
+         .recipe-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 2rem;
+         }
+
+         .recipe-card:hover {
+            transform: translateY(-10px);
+         }
+
+         .recipe-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+         }
+
+         .recipe-card-content {
+            padding: 1.5rem;
+         }
+
+         .recipe-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+         }
+
+         .recipe-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+         }
+
+         .rating {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+         }
+
+         .testimonial-section {
+            padding: 5rem 0;
+            background-color: white;
+         }
+
+         .testimonial-card {
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+         }
+
+         .testimonial-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+         }
+
+         .testimonial-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+         }
+
+         .testimonial-card p {
+            color: #666;
+            font-style: italic;
+         }
+
+         .newsletter-section {
+            padding: 5rem 0;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+         }
+
+         .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+         }
+
+         .newsletter-form input {
+            padding: 1rem;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            margin-bottom: 0;
+            width: 70%;
+         }
+
+         .newsletter-form .btn {
+            border-radius: 0 5px 5px 0;
+            padding: 1rem 2rem;
+            background-color: #f39c12;
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+         }
+
+         .newsletter-form .btn:hover {
+            background-color: #d68910;
+            transform: translateY(-2px);
+         }
+
+         .newsletter-form .input-group {
+            display: flex;
+            margin: 2rem auto;
+            max-width: 500px;
+         }
+
+         footer {
+            background: var(--gradient-dark);
+            color: white;
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+         }
+
+         footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+         }
+
+         .footer-links h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+            position: relative;
+            display: inline-block;
+         }
+
+         .footer-links h4::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-color);
+         }
+
+         .footer-links ul {
+            list-style: none;
+            padding: 0;
+         }
+
+         .footer-links li {
+            margin-bottom: 0.8rem;
+         }
+
+         .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+         }
+
+         .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+         }
+
+         .social-icons {
+            margin-top: 2rem;
+         }
+
+         .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1);
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+         }
+
+         .social-icons a:hover {
+            background: var(--accent-color);
+            transform: translateY(-3px);
+         }
+
+         @keyframes fadeInUp {
+            from {
+               opacity: 0;
+               transform: translateY(20px);
+            }
+            to {
+               opacity: 1;
+               transform: translateY(0);
+            }
+         }
+
+         @media (max-width: 768px) {
+            .hero-content h1 {
+               font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+               font-size: 1rem;
+            }
+            
+            .section-title h2 {
+               font-size: 2rem;
+            }
+         }
+
+         /* Scrolling Recipes Styles */
+         .scrolling-recipes {
+            background-color: var(--light-bg);
+            overflow: hidden;
+            position: relative;
+         }
+
+         .scrolling-wrapper {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+         }
+
+         .scrolling-items {
+            display: flex;
+            animation: scroll 60s linear infinite;
+            width: max-content;
+         }
+
+         .recipe-item {
+            flex: 0 0 300px;
+            margin: 0 15px;
+            text-align: center;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+         }
+
+         .recipe-item:hover {
+            transform: translateY(-5px);
+         }
+
+         .recipe-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+         }
+
+         .recipe-item h4 {
+            padding: 15px;
+            margin: 0;
+            color: var(--primary-color);
+         }
+
+         @keyframes scroll {
+            0% {
+               transform: translateX(0);
+            }
+            100% {
+               transform: translateX(-50%);
+            }
+         }
+
+         /* Pause animation on hover */
+         .scrolling-items:hover {
+            animation-play-state: paused;
+         }
+
+         hr {
+            border-color: rgba(255,255,255,0.1);
+         }
+
+         /* Admin Toggle Button Styles */
+         .admin-toggle {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+         }
+
+         .admin-toggle:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+         }
+
+         .admin-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: var(--gradient-dark);
+            border-radius: 8px;
+            min-width: 200px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+            margin-top: 0.5rem;
+         }
+
+         .admin-menu.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+         }
+
+         .admin-menu-item {
+            padding: 0.7rem 1.5rem;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+         }
+
+         .admin-menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+         }
+
+         .admin-menu-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            transform: translateX(5px);
+         }
+
+         .dropdown-divider {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin: 0.5rem 0;
+         }
+
+         .admin-menu-item.text-danger {
+            color: #dc3545;
+         }
+
+         .admin-menu-item.text-danger:hover {
+            background: rgba(220, 53, 69, 0.1);
+            color: #ff4757;
+         }
+
+         .admin-dropdown {
+            position: relative;
+         }
+
+         /* Cooking Classes Section Styles */
+         .cooking-classes-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 80px 0;
+         }
+
+         .class-card {
+            border: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+         }
+
+         .class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+         }
+
+         .class-card .badge {
+            font-weight: 500;
+            font-size: 0.85rem;
+         }
+
+         .class-card .progress {
+            background-color: #f1f1f1;
+            border-radius: 10px;
+         }
+
+         .class-card .progress-bar {
+            border-radius: 10px;
+         }
+
+         .class-card .btn-primary {
+            background-color: var(--accent-color);
+            border: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+         }
+
+         .class-card .btn-primary:hover {
+            background-color: #e67e22;
+            transform: translateY(-2px);
+         }
+
+         .class-card i {
+            width: 20px;
+            text-align: center;
+         }
+
+         .class-card .text-warning i {
+            font-size: 0.9rem;
+         }
+
+         .feature-icon {
+            height: 80px;
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.1) 0%, rgba(243, 156, 18, 0.2) 100%);
+            transition: transform 0.3s ease;
+         }
+
+         .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+         }
+
+         .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+         }
+
+         .section-title p {
+            font-size: 1.1rem;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto;
+         }
+
+         @media (max-width: 768px) {
+            .cooking-classes-section {
+               padding: 40px 0;
+            }
+
+            .section-title h2 {
+               font-size: 2rem;
+            }
+         }
+
+         /* Additional Styles for Testimonials and FAQ */
+         .testimonial-carousel {
+            position: relative;
+            padding: 20px 0;
+         }
+
+         .testimonial-item {
+            transition: transform 0.3s ease;
+         }
+
+         .carousel-control-prev,
+         .carousel-control-next {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.8;
+         }
+
+         .carousel-control-prev {
+            left: -50px;
+         }
+
+         .carousel-control-next {
+            right: -50px;
+         }
+
+         .carousel-control-prev:hover,
+         .carousel-control-next:hover {
+            opacity: 1;
+         }
+
+         .accordion-button {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 1rem 1.5rem;
+         }
+
+         .accordion-button:not(.collapsed) {
+            background-color: var(--accent-color);
+            color: white;
+         }
+
+         .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(243, 156, 18, 0.5);
+         }
+
+         .accordion-button::after {
+            background-size: 1.2rem;
+            transition: transform 0.3s ease;
+         }
+
+         .accordion-item {
+            background: transparent;
+         }
+
+         .accordion-body {
+            padding: 1.5rem;
+            line-height: 1.6;
+         }
+
+         @media (max-width: 768px) {
+            .carousel-control-prev,
+            .carousel-control-next {
+               display: none;
+            }
+         }
+
+         /* Update the profile icon styles */
+         .nav-buttons .fa-user-circle {
+            transition: transform 0.3s ease;
+            font-size: 2rem;
+         }
+
+         .nav-buttons .fa-user-circle:hover {
+            transform: scale(1.1);
+            color: var(--accent-color);
+         }
+
+         .nav-buttons .text-light {
+            font-weight: 500;
+         }
+      </style>
+   </head>
+   <body>
+      <!-- Navigation -->
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+         <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+               <img src="https://mir-s3-cdn-cf.behance.net/projects/404/fe3659116196955.Y3JvcCw1NzUzLDQ1MDAsMTEyNSww.png" alt="Crazy Bites Logo">
+               Crazy Bites
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+               <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                     <a class="nav-link" href="{% url 'index' %}"><i class="fas fa-home me-1"></i>Home</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-utensils me-1"></i>Meals
+                     </a>
+                     <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'breakfast' %}">Breakfast</a></li>
+                        <li><a class="dropdown-item" href="{% url 'lunch' %}">Lunch</a></li>
+                        <li><a class="dropdown-item" href="{% url 'dinner' %}">Dinner</a></li>
+                     </ul>
+                  </li>
+                  <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-globe-americas me-1"></i>Cuisines
+                     </a>
+                     <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'italian' %}">Italian</a></li>
+                        <li><a class="dropdown-item" href="{% url 'chinese' %}">Chinese</a></li>
+                        <li><a class="dropdown-item" href="{% url 'indian_recipes' %}">Indian</a></li>
+                        <li><a class="dropdown-item" href="{% url 'mexican_recipes' %}">Mexican</a></li>
+                     </ul>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="{% url 'feedback' %}">
+                        <i class="fas fa-comment me-1"></i>Feedback
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="{% url 'aboutus' %}">
+                        <i class="fas fa-info-circle me-1"></i>About
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="#contact">
+                        <i class="fas fa-envelope me-1"></i>Contact
+                     </a>
+                  </li>
+               </ul>
+               <div class="nav-buttons d-flex align-items-center">
+                  {% if user.is_authenticated %}
+                     {% if user.is_staff %}
+                     <div class="admin-dropdown">
+                        <button class="admin-toggle d-flex align-items-center" id="adminToggle">
+                           <i class="fas fa-cog me-2"></i>
+                           <span>Admin</span>
+                        </button>
+                        <div class="admin-menu" id="adminMenu">
+                           <a href="{% url 'admin_dashboard' %}" class="admin-menu-item">
+                              <i class="fas fa-tachometer-alt"></i> Dashboard
+                           </a>
+                           <a href="{% url 'manage_users' %}" class="admin-menu-item">
+                              <i class="fas fa-users"></i> Manage Users
+                           </a>
+                           <a href="{% url 'manage_recipes' %}" class="admin-menu-item">
+                              <i class="fas fa-utensils"></i> Manage Recipes
+                           </a>
+                           <a href="{% url 'manage_feedback' %}" class="admin-menu-item">
+                              <i class="fas fa-comments"></i> Manage Feedback
+                           </a>
+                           <div class="dropdown-divider"></div>
+                           <a href="{% url 'logout' %}" class="admin-menu-item text-danger">
+                              <i class="fas fa-sign-out-alt"></i> Logout
+                           </a>
+                        </div>
+                     </div>
+                     {% else %}
+                     <div class="d-flex align-items-center ms-auto">
+                        <span class="text-light me-3" style="font-size: 1.1rem;">Welcome, {{ user.username }}</span>
+                        <a href="{% url 'dashboard' %}" class="text-light me-3" title="Profile Dashboard">
+                           <i class="fas fa-user-circle fa-2x"></i>
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm">
+                           <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                     </div>
+                     {% endif %}
+                  {% else %}
+                     <a href="{% url 'register' %}" class="btn btn-primary btn-sm me-2">
+                        <i class="fas fa-user-plus me-1"></i>Register
+                     </a>
+                     <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">
+                        <i class="fas fa-sign-in-alt me-1"></i>Login
+                     </a>
+                  {% endif %}
+               </div>
+            </div>
+         </div>
+      </nav>
+
+      <!-- Hero Section -->
+      <section class="hero-section">
+         <div class="hero-content">
+            <h1>Discover Culinary Excellence</h1>
+            <p>Explore our collection of mouth-watering recipes from around the world</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#featured" class="btn btn-primary">
+                    <i class="fas fa-compass me-2"></i>Explore Recipes
+                </a>
+                <a href="{% url 'share_recipe' %}" class="btn btn-share">
+                    <i class="fas fa-share-alt me-2"></i>Share Recipe
+                </a>
+            </div>
+         </div>
+      </section>
+
+      <!-- Featured Recipes Section -->
+      <section class="featured-section" id="featured">
+         <div class="container">
+            <div class="section-title">
+               <h2>Featured Recipes</h2>
+               <p>Discover our most popular and trending recipes from various cuisines</p>
+            </div>
+            <div class="row">
+               <div class="col-md-4">
+                  <div class="recipe-card">
+                     <img src="https://bakewithzoha.com/wp-content/uploads/2024/03/chicken-biryani-featured-1.jpg" alt="Biryani">
+                     <div class="recipe-card-content">
+                        <h3>Chicken Biryani</h3>
+                        <p>Aromatic rice dish with tender chicken and exotic spices</p>
+                        <div class="rating">
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <a href="{% url 'indian_recipes' %}" class="btn btn-primary">View Recipe</a>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="recipe-card">
+                     <img src="https://www.seriouseats.com/thmb/4kbwN13BlZnZ3EywrtG2AzCKuYs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/20210712-tacos-al-pastor-melissa-hom-seriouseats-37-f72cdd02c9574bceb1eef1c8a23b76ed.jpg" alt="Tacos">
+                     <div class="recipe-card-content">
+                        <h3>Tacos al Pastor</h3>
+                        <p>Authentic Mexican street food with marinated pork and pineapple</p>
+                        <div class="rating">
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                        </div>
+                        <a href="{% url 'mexican_recipes' %}" class="btn btn-primary">View Recipe</a>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="recipe-card">
+                     <img src="https://www.everydayeasyeats.com/wp-content/uploads/2016/06/Chinese-Fried-Rice-1.jpg" alt="Fried Rice">
+                     <div class="recipe-card-content">
+                        <h3>Chinese Fried Rice</h3>
+                        <p>Classic stir-fried rice with vegetables and your choice of protein</p>
+                        <div class="rating">
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="fas fa-star"></i>
+                           <i class="far fa-star"></i>
+                        </div>
+                        <a href="{% url 'chinese_recipes' %}" class="btn btn-primary">View Recipe</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!-- Testimonials Section -->
+      <section class="testimonial-section">
+         <div class="container">
+            <div class="section-title">
+               <h2>What Our Users Say</h2>
+               <p>Read what our community members have to say about their cooking experiences</p>
+            </div>
+            <div class="row">
+               <div class="col-md-4">
+                  <div class="testimonial-card">
+                     <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg" alt="User">
+                     <h4>Sebastian Stan</h4>
+                     <p>"The Chole Bhature recipe was absolutely amazing! The instructions were clear and the result was restaurant-quality."</p>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="testimonial-card">
+                     <img src="https://img.freepik.com/free-photo/woman-home_144627-28149.jpg" alt="User">
+                     <h4>Nisha Verma</h4>
+                     <p>"I've tried several recipes from Crazy Bites and they never disappoint. The pancake recipe is now my go-to breakfast!"</p>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="testimonial-card">
+                     <img src="https://thumbs.dreamstime.com/b/portrait-handsome-smiling-young-man-folded-arms-smiling-joyful-cheerful-men-crossed-hands-isolated-studio-shot-172869765.jpg" alt="User">
+                     <h4>Dhruv Mahajan</h4>
+                     <p>"The mutton biryani recipe was a hit at my dinner party. Everyone was asking for the recipe!"</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!-- Newsletter Section -->
+      <section class="newsletter-section">
+         <div class="container">
+            <h2>Subscribe to Our Newsletter</h2>
+            <p>Get the latest recipes and cooking tips delivered to your inbox</p>
+            <form class="newsletter-form">
+               <div class="input-group">
+                  <input type="email" class="form-control" placeholder="Enter your email">
+                  <button class="btn" type="submit">Subscribe</button>
+               </div>
+            </form>
+         </div>
+      </section>
+
+      <!-- Cooking Tips Section -->
+      <section class="cooking-tips-section py-5">
+         <div class="container">
+            <div class="section-title">
+               <h2>Cooking Tips & Tricks</h2>
+               <p>Professional tips to enhance your cooking skills</p>
+            </div>
+            <div class="row">
+               <div class="col-md-6 mb-4">
+                  <div class="tip-card p-4 bg-light rounded">
+                     <i class="fas fa-utensils fa-2x mb-3 text-primary"></i>
+                     <h4>Knife Skills</h4>
+                     <p>Learn the proper way to hold and use a chef's knife. Master basic cuts like julienne, dice, and chiffonade.</p>
+                  </div>
+               </div>
+               <div class="col-md-6 mb-4">
+                  <div class="tip-card p-4 bg-light rounded">
+                     <i class="fas fa-temperature-high fa-2x mb-3 text-primary"></i>
+                     <h4>Temperature Control</h4>
+                     <p>Understand the importance of proper temperature control in cooking. Learn how to use a meat thermometer effectively.</p>
+                  </div>
+               </div>
+               <div class="col-md-6 mb-4">
+                  <div class="tip-card p-4 bg-light rounded">
+                     <i class="fas fa-balance-scale fa-2x mb-3 text-primary"></i>
+                     <h4>Ingredient Substitutions</h4>
+                     <p>Discover smart ingredient substitutions for common recipes. Never be caught without the right ingredients again.</p>
+                  </div>
+               </div>
+               <div class="col-md-6 mb-4">
+                  <div class="tip-card p-4 bg-light rounded">
+                     <i class="fas fa-clock fa-2x mb-3 text-primary"></i>
+                     <h4>Time Management</h4>
+                     <p>Learn how to plan and execute multiple dishes simultaneously. Master the art of timing in the kitchen.</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!-- Chef's Special Section -->
+      <section class="chef-special-section py-5 bg-light">
+         <div class="container">
+            <div class="section-title">
+               <h2>Chef's Special</h2>
+               <p>Exclusive recipes from our master chefs</p>
+            </div>
+            <div class="row">
+               <div class="col-md-6 mb-4">
+                  <div class="chef-card">
+                     <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg" alt="Chef" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                     <h4>Chef Michael Rossi</h4>
+                     <p class="text-muted">Italian Cuisine Specialist</p>
+                     <p>"My signature dish, Truffle Risotto, combines traditional Italian techniques with modern presentation."</p>
+                     <a href="#" class="btn btn-outline-primary">View Recipe</a>
+                  </div>
+               </div>
+               <div class="col-md-6 mb-4">
+                  <div class="chef-card">
+                     <img src="https://images.pexels.com/photos/3771089/pexels-photo-3771089.jpeg" alt="Chef" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                     <h4>Chef Priya Patel</h4>
+                     <p class="text-muted">Indian Cuisine Expert</p>
+                     <p>"My Butter Chicken recipe has been perfected over 20 years of experience in traditional Indian cooking."</p>
+                     <a href="#" class="btn btn-outline-primary">View Recipe</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!-- Seasonal Recipes Section -->
+      <section class="seasonal-recipes-section py-5">
+         <div class="container">
+            <div class="section-title">
+               <h2>Seasonal Specials</h2>
+               <p>Recipes perfect for the current season</p>
+            </div>
+            <div class="row">
+               <div class="col-md-3 mb-4">
+                  <div class="seasonal-card text-center">
+                     <img src="https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg" alt="Spring" class="img-fluid rounded mb-3">
+                     <h4>Spring</h4>
+                     <p>Fresh salads, light pastas, and seasonal vegetables</p>
+                  </div>
+               </div>
+               <div class="col-md-3 mb-4">
+                  <div class="seasonal-card text-center">
+                     <img src="https://images.pexels.com/photos/1028599/pexels-photo-1028599.jpeg" alt="Summer" class="img-fluid rounded mb-3">
+                     <h4>Summer</h4>
+                     <p>BBQ recipes, cold soups, and refreshing desserts</p>
+                  </div>
+               </div>
+               <div class="col-md-3 mb-4">
+                  <div class="seasonal-card text-center">
+                     <img src="https://images.pexels.com/photos/1107717/pexels-photo-1107717.jpeg" alt="Autumn" class="img-fluid rounded mb-3">
+                     <h4>Autumn</h4>
+                     <p>Comfort foods, pumpkin dishes, and warm soups</p>
+                  </div>
+               </div>
+               <div class="col-md-3 mb-4">
+                  <div class="seasonal-card text-center">
+                     <img src="https://images.pexels.com/photos/1028599/pexels-photo-1028599.jpeg" alt="Winter" class="img-fluid rounded mb-3">
+                     <h4>Winter</h4>
+                     <p>Hearty stews, baked goods, and holiday specials</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!-- Cooking Classes Section -->
+      <section class="cooking-classes-section py-5" id="cooking-classes">
+         <div class="container">
+            <div class="section-title">
+               <h2>Online Cooking Classes</h2>
+               <p>Learn from the best chefs in the comfort of your home</p>
+            </div>
+            <div class="row">
+               <div class="col-md-4 mb-4">
+                  <div class="class-card bg-white rounded-4 shadow-sm overflow-hidden">
+                     <div class="position-relative">
+                        <img src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg" alt="Italian Masterclass" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                        <div class="position-absolute top-0 end-0 m-3">
+                           <span class="badge bg-danger rounded-pill px-3 py-2">Most Popular</span>
+                        </div>
+                     </div>
+                     <div class="p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                           <h4 class="h5 mb-0">Italian Masterclass</h4>
+                           <span class="badge bg-success rounded-pill px-3 py-2">$199</span>
+                        </div>
+                        <p class="text-muted mb-4">Master authentic Italian cooking techniques from pasta making to perfect pizzas</p>
+                        <div class="mb-3">
+                           <div class="d-flex align-items-center mb-2">
+                              <i class="fas fa-clock text-primary me-2"></i>
+                              <span>4 weeks (16 sessions)</span>
+                           </div>
+                           <div class="d-flex align-items-center mb-2">
+                              <i class="fas fa-user-tie text-primary me-2"></i>
+                              <span>Chef Michael Rossi</span>
+                           </div>
+                           <div class="d-flex align-items-center">
+                              <div class="text-warning me-2">
+                                 <i class="fas fa-star"></i>
+                                 <i class="fas fa-star"></i>
+                                 <i class="fas fa-star"></i>
+                                 <i class="fas fa-star"></i>
+                                 <i class="fas fa-star-half-alt"></i>
+                              </div>
+                              <span>4.9 (128 reviews)</span>
+                           </div>
+                        </div>
+                        <div class="progress mb-2" style="height: 6px;">
+                           <div class="progress-bar bg-danger" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <p class="text-danger small mb-4">Only 3 spots left!</p>
+                        <a href="{% url 'courses:enroll' %}" class="btn btn-primary w-100 py-2 rounded-pill">Enroll Now</a>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4 mb-4">
+                  <div class="class-card bg-white rounded-4 shadow-sm overflow-hidden">
+                     <div class="position-relative">
+                        <img src="https://images.pexels.com/photos/6287295/pexels-photo-6287295.jpeg" alt="Baking Class" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                        <div class="position-absolute top-0 end-0 m-3">
+                           <span class="badge bg-info rounded-pill px-3 py-2">Beginner Friendly</span>
+                        </div>
+                     </div>
+                     <div class="p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                           <h4 class="h5 mb-0">Baking Basics</h4>
+                           <span class="badge bg-success rounded-pill px-3 py-2">$249</span>
+                        </div>
+                        <p class="text-muted mb-4">From basic bread to complex pastries, master the art of baking from scratch</p>
+                        <div class="mb-3">
+                           <div class="d-flex align-items-center mb-2">
+                              <i class="fas fa-clock text-primary me-2"></i>
+                              <span>6 weeks (24 sessions)</span>
+                           </div>
+                           <div class="d-flex align-items-center mb-2">
+                              <i class="fas fa-user-tie text-primary me-2"></i>
+                              <span>Chef Sarah Johnson</span>
+                           </div>
+                           <div class="d-flex align-items-center">
+                              <div class="text-warning me-2">
+                                 <i class="fas fa-star"></i>
+                                 <i class="fas fa-star"></i>
+                                 <i class="fas fa-star"></i>
+                                 <i class="fas fa-star"></i>
+                                 <i class="fas fa-star"></i>
+                              </div>
+                              <span>4.8 (95 reviews)</span>
+                           </div>
+                        </div>
+                        <div class="progress mb-2" style="height: 6px;">
+                           <div class="progress-bar bg-warning" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <p class="text-warning small mb-4">8 spots remaining</p>
+                        <a href="{% url 'courses:enroll' %}" class="btn btn-primary w-100 py-2 rounded-pill">Enroll Now</a>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4 mb-4">
+                  <div class="class-card bg-white rounded-4 shadow-sm overflow-hidden">
+                     <div class="position-relative">
+                        <img src="https://images.pexels.com/photos/5409010/pexels-photo-5409010.jpeg" alt="Asian Fusion" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                        <div class="position-absolute top-0 end-0 m-3">
+                           <span class="badge bg-primary rounded-pill px-3 py-2">New Course</span>
+                        </div>
+                     </div>
+                     <div class="p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                           <h4 class="h5 mb-0">Asian Fusion</h4>
+                           <span class="badge bg-success rounded-pill px-3 py-2">$299</span>
+                        </div>
+                        <p class="text-muted mb-4">Explore modern Asian fusion cuisine and innovative cooking techniques</p>
+                        <div class="mb-3">
+                           <div class="d-flex align-items-center mb-2">
+                              <i class="fas fa-clock text-primary me-2"></i>
+                              <span>5 weeks (20 sessions)</span>
+                           </div>
+                           <div class="d-flex align-items-center mb-2">
+                              <i class="fas fa-user-tie text-primary me-2"></i>
+                              <span>Chef David Wong</span>
+                           </div>
+                           <div class="d-flex align-items-center">
+                              <div class="text-warning me-2">
+                                 <i class="fas fa-star"></i>
+                                 <i class="fas fa-star"></i>
+                                 <i class="fas fa-star"></i>
+                                 <i class="fas fa-star"></i>
+                                 <i class="far fa-star"></i>
+                              </div>
+                              <span>4.7 (42 reviews)</span>
+                           </div>
+                        </div>
+                        <div class="progress mb-2" style="height: 6px;">
+                           <div class="progress-bar bg-success" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <p class="text-success small mb-4">12 spots available</p>
+                        <a href="{% url 'courses:enroll' %}" class="btn btn-primary w-100 py-2 rounded-pill">Enroll Now</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            
+            <!-- Course Features -->
+            <div class="row mt-5 g-4">
+               <div class="col-md-3">
+                  <div class="feature-card text-center p-4 bg-white rounded-4 shadow-sm">
+                     <div class="feature-icon mb-3">
+                        <i class="fas fa-video fa-2x text-primary"></i>
+                     </div>
+                     <h5>Live Sessions</h5>
+                     <p class="text-muted mb-0">Interactive classes with real-time feedback</p>
+                  </div>
+               </div>
+               <div class="col-md-3">
+                  <div class="feature-card text-center p-4 bg-white rounded-4 shadow-sm">
+                     <div class="feature-icon mb-3">
+                        <i class="fas fa-certificate fa-2x text-primary"></i>
+                     </div>
+                     <h5>Certificate</h5>
+                     <p class="text-muted mb-0">Professional certification upon completion</p>
+                  </div>
+               </div>
+               <div class="col-md-3">
+                  <div class="feature-card text-center p-4 bg-white rounded-4 shadow-sm">
+                     <div class="feature-icon mb-3">
+                        <i class="fas fa-book fa-2x text-primary"></i>
+                     </div>
+                     <h5>Course Material</h5>
+                     <p class="text-muted mb-0">Detailed recipes and technique guides</p>
+                  </div>
+               </div>
+               <div class="col-md-3">
+                  <div class="feature-card text-center p-4 bg-white rounded-4 shadow-sm">
+                     <div class="feature-icon mb-3">
+                        <i class="fas fa-users fa-2x text-primary"></i>
+                     </div>
+                     <h5>Community</h5>
+                     <p class="text-muted mb-0">Join our cooking community</p>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Testimonial Carousel -->
+            <div class="testimonial-carousel mt-5">
+               <div class="section-title text-center mb-4">
+                  <h3>What Our Students Say</h3>
+               </div>
+               <div class="row justify-content-center">
+                  <div class="col-md-8">
+                     <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                           <div class="carousel-item active">
+                              <div class="testimonial-item text-center p-4 bg-white rounded-4 shadow-sm">
+                                 <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Student" class="rounded-circle mb-3" style="width: 80px; height: 80px; object-fit: cover;">
+                                 <p class="lead mb-3">"The Italian Masterclass exceeded my expectations. Chef Michael's attention to detail and passion for teaching made every session enjoyable."</p>
+                                 <h5 class="mb-1">John Smith</h5>
+                                 <p class="text-muted mb-0">Italian Masterclass Graduate</p>
+                              </div>
+                           </div>
+                           <div class="carousel-item">
+                              <div class="testimonial-item text-center p-4 bg-white rounded-4 shadow-sm">
+                                 <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="Student" class="rounded-circle mb-3" style="width: 80px; height: 80px; object-fit: cover;">
+                                 <p class="lead mb-3">"Baking Basics transformed me from a novice to a confident baker. The techniques I learned are invaluable."</p>
+                                 <h5 class="mb-1">Emily Johnson</h5>
+                                 <p class="text-muted mb-0">Baking Basics Graduate</p>
+                              </div>
+                           </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                           <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                           <span class="visually-hidden">Next</span>
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section mt-5">
+               <div class="section-title text-center mb-4">
+                  <h3>Frequently Asked Questions</h3>
+               </div>
+               <div class="row justify-content-center">
+                  <div class="col-md-8">
+                     <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item border-0 mb-3">
+                           <h2 class="accordion-header">
+                              <button class="accordion-button rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                 What equipment do I need for the classes?
+                              </button>
+                           </h2>
+                           <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                              <div class="accordion-body bg-white rounded-bottom-3">
+                                 Basic kitchen equipment including pots, pans, knives, and measuring tools. A detailed list will be provided upon enrollment.
+                              </div>
+                           </div>
+                        </div>
+                        <div class="accordion-item border-0 mb-3">
+                           <h2 class="accordion-header">
+                              <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                 Are the classes suitable for beginners?
+                              </button>
+                           </h2>
+                           <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                              <div class="accordion-body bg-white rounded-bottom-3">
+                                 Yes! Our classes are designed for all skill levels. We provide detailed instructions and support throughout the course.
+                              </div>
+                           </div>
+                        </div>
+                        <div class="accordion-item border-0">
+                           <h2 class="accordion-header">
+                              <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                 What happens if I miss a class?
+                              </button>
+                           </h2>
+                           <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                              <div class="accordion-body bg-white rounded-bottom-3">
+                                 All sessions are recorded and available for replay. You can also schedule make-up sessions with the instructor.
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!-- Scrolling Recipes Carousel -->
+      <section class="scrolling-recipes py-5">
+         <div class="container-fluid">
+            <div class="section-title">
+               <h2>Featured Recipes</h2>
+               <p>Discover our most popular recipes</p>
+            </div>
+            <div class="scrolling-wrapper">
+               <div class="scrolling-items">
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg" alt="Recipe">
+                     <h4>Vegetable Pasta</h4>
+                  </div>
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg" alt="Recipe">
+                     <h4>Chicken Curry</h4>
+                  </div>
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg" alt="Recipe">
+                     <h4>Fresh Salad</h4>
+                  </div>
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640775/pexels-photo-1640775.jpeg" alt="Recipe">
+                     <h4>Grilled Salmon</h4>
+                  </div>
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640776/pexels-photo-1640776.jpeg" alt="Recipe">
+                     <h4>Beef Steak</h4>
+                  </div>
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640773/pexels-photo-1640773.jpeg" alt="Recipe">
+                     <h4>Fruit Smoothie</h4>
+                  </div>
+                  <!-- Duplicate items for continuous scrolling -->
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640774/pexels-photo-1640774.jpeg" alt="Recipe">
+                     <h4>Vegetable Pasta</h4>
+                  </div>
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg" alt="Recipe">
+                     <h4>Chicken Curry</h4>
+                  </div>
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg" alt="Recipe">
+                     <h4>Fresh Salad</h4>
+                  </div>
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640775/pexels-photo-1640775.jpeg" alt="Recipe">
+                     <h4>Grilled Salmon</h4>
+                  </div>
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640776/pexels-photo-1640776.jpeg" alt="Recipe">
+                     <h4>Beef Steak</h4>
+                  </div>
+                  <div class="recipe-item">
+                     <img src="https://images.pexels.com/photos/1640773/pexels-photo-1640773.jpeg" alt="Recipe">
+                     <h4>Fruit Smoothie</h4>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!-- Footer -->
+      <footer id="contact">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-4">
+                  <div class="footer-links">
+                     <h4>Quick Links</h4>
+                     <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Recipes</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="footer-links">
+                     <h4>Contact Us</h4>
+                     <ul>
+                        <li><i class="fas fa-envelope"></i> crazybites@gmail.com</li>
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Food Street, Culinary City</li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="footer-links">
+                     <h4>Follow Us</h4>
+                     <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <hr class="mt-4 mb-4">
+            <div class="text-center">
+               <p>&copy; 2024 Crazy Bites. All rights reserved.</p>
+            </div>
+         </div>
+      </footer>
+
+      <!-- Bootstrap JS -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+      <script>
+         document.addEventListener('DOMContentLoaded', function() {
+            const adminToggle = document.getElementById('adminToggle');
+            const adminMenu = document.getElementById('adminMenu');
+
+            if (adminToggle && adminMenu) {
+               // Toggle menu on button click
+               adminToggle.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  adminMenu.classList.toggle('show');
+               });
+
+               // Close menu when clicking outside
+               document.addEventListener('click', function(e) {
+                  if (!adminToggle.contains(e.target) && !adminMenu.contains(e.target)) {
+                     adminMenu.classList.remove('show');
+                  }
+               });
+
+               // Close menu when clicking on a menu item
+               adminMenu.querySelectorAll('.admin-menu-item').forEach(item => {
+                  item.addEventListener('click', function() {
+                     adminMenu.classList.remove('show');
+                  });
+               });
+
+               // Prevent menu from closing when clicking inside it
+               adminMenu.addEventListener('click', function(e) {
+                  e.stopPropagation();
+               });
+            }
+
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+               const navbar = document.querySelector('.navbar');
+               if (window.scrollY > 50) {
+                  navbar.classList.add('scrolled');
+               } else {
+                  navbar.classList.remove('scrolled');
+               }
+            });
+         });
+      </script>
+   </body>
+</html>
+    

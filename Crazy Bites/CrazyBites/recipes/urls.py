@@ -1,0 +1,48 @@
+from django.urls import path
+from django.views.generic import RedirectView
+from . import views
+
+urlpatterns=[
+    path('',views.main_view,name='index'),
+    path('aboutus/',views.aboutus,name='aboutus'),
+    path('breakfast/',views.breakfast_view,name='breakfast'),
+    path('chinese_recipes/',views.chinese_recipes_view,name='chinese_recipes'),
+    path('chinese/',views.chinese_view,name='chinese'),
+    path('dashboard/',views.dashboard_view,name='dashboard'),
+    path('dinner/',views.dinner_view,name='dinner'),
+    path('edit_recipe/',views.edit_recipe_view,name='edit_recipe'),
+    path('feedback/',views.feedback_view,name='feedback'),
+    path('indian_recipes/',views.indian_recipes_view,name='indian_recipes'),
+    path('italian/',views.italian_view,name='italian'),
+    path('login/',views.login_view,name='login'),
+    path('lunch/',views.lunch_view,name='lunch'),
+    path('mexican_recipes/',views.mexican_recipes_view,name='mexican_recipes'),
+    path('pastry/',views.pastry_view,name='pastry'),
+    path('ramen/',views.ramen_view,name='ramen'),
+    path('register/',views.register_view,name='register'),
+    path('search_results/',views.search_results_view,name='search_results'),
+    path('share_recipe/',views.share_recipe_view,name='share_recipe'),
+    path('view_recipes/',views.view_recipes_view,name='view_recipes'),
+    path('recipe/<int:pk>/',views.recipe_detail,name='recipe_detail'),
+    path('recipe/<int:pk>/delete/',views.recipe_delete,name='recipe_delete'),
+    path('recipe/<int:pk>/edit/',views.recipe_update,name='edit_recipe'),
+    path('recipes/', RedirectView.as_view(url='/view_recipes/', permanent=True)),
+    path('logout/',views.user_logout,name='logout'),
+    path('submit-feedback/', views.submit_feedback, name='submit_feedback'),
+    
+    # Admin management URLs
+    path('dashboard/admin/', views.admin_dashboard, name='admin_dashboard'),
+    path('dashboard/admin/users/', views.manage_users, name='manage_users'),
+    path('dashboard/admin/users/add/', views.add_user, name='add_user'),
+    path('dashboard/admin/recipes/', views.manage_recipes, name='manage_recipes'),
+    path('dashboard/admin/recipes/add/', views.add_recipe, name='add_recipe'),
+    path('dashboard/admin/recipes/<int:recipe_id>/toggle/', views.toggle_recipe_status, name='toggle_recipe_status'),
+    path('dashboard/admin/recipes/<int:pk>/edit/', views.recipe_update, name='recipe_update'),
+    path('dashboard/admin/feedback/', views.manage_feedback, name='manage_feedback'),
+    path('dashboard/admin/user/<int:user_id>/', views.view_user_details, name='user_details'),
+    path('dashboard/admin/toggle_user/<int:user_id>/', views.toggle_user_status, name='toggle_user_status'),
+    path('dashboard/admin/delete_feedback/<int:feedback_id>/', views.delete_feedback, name='delete_feedback'),
+    path('dashboard/admin/delete_recipe/<int:recipe_id>/', views.delete_recipe, name='delete_recipe'),
+    path('recipe/<int:recipe_id>/like/', views.toggle_like, name='toggle_like'),
+    path('recipe/<int:recipe_id>/wishlist/', views.toggle_wishlist, name='toggle_wishlist'),
+]

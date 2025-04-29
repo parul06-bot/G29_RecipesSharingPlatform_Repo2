@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Your Certificate - Crazy Bites{% endblock %}
+
+{% block styles %}
+<style>
+    .certificate-body {
+        background-color: #f0f2f5; /* Light grey background for the page */
+    }
+    .certificate-container {
+        border: 1px solid #ddd;
+        /* Double border effect */
+        box-shadow: 0 0 0 10px #f39c12, 0 5px 25px rgba(0,0,0,0.1);
+        padding: 40px 50px;
+        background-color: #ffffff; /* White background for certificate */
+        text-align: center;
+        max-width: 850px;
+        margin: 40px auto;
+        position: relative;
+        overflow: hidden; /* Hide overflowing elements */
+        border-radius: 5px; /* Slight radius for inner box */
+    }
+    .certificate-title {
+        font-family: 'Playfair Display', serif;
+        color: #2c3e50;
+        font-size: 2.8rem;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+    .certificate-title i {
+        color: #f39c12;
+        margin-right: 10px;
+        font-size: 2.5rem;
+        vertical-align: middle;
+    }
+    .certificate-subtitle {
+        font-size: 1.1rem;
+        color: #6c757d;
+        margin-bottom: 35px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .certificate-recipient {
+        font-family: 'Dancing Script', cursive;
+        font-size: 3.2rem;
+        color: #e74c3c;
+        margin: 35px 0;
+        border-bottom: 2px solid #f39c12;
+        display: inline-block;
+        padding-bottom: 8px;
+    }
+    .certificate-course {
+        font-size: 1.2rem;
+        margin-bottom: 35px;
+        color: #34495e;
+        line-height: 1.6;
+    }
+    .certificate-footer {
+        margin-top: 40px; /* Reduced margin */
+        display: flex;
+        justify-content: space-around;
+        align-items: center; /* Center vertically */
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+    .signature {
+        border-top: 1px solid #ccc;
+        padding-top: 8px;
+        width: 35%; /* Adjusted width */
+        font-style: italic;
+    }
+    .certificate-id {
+        font-size: 0.8rem;
+        color: #95a5a6;
+        margin-top: 15px;
+    }
+    .action-buttons-container {
+        margin-top: 30px;
+        padding-bottom: 20px; /* Add padding at the bottom */
+    }
+    .share-buttons a {
+        margin: 0 5px;
+        font-size: 1.5rem;
+        color: #34495e;
+        transition: color 0.3s ease;
+    }
+    .share-buttons a:hover {
+        color: #f39c12;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 certificate-body">
+    <div class="certificate-container">
+        
+        <h1 class="certificate-title"><i class="fas fa-award"></i>Certificate of Completion</h1>
+        <p class="certificate-subtitle">This certifies that</p>
+        
+        <h2 class="certificate-recipient">{{ user_name }}</h2>
+        
+        <p class="certificate-course">has successfully completed the<br>
+        <strong>{{ course_name|default:"Online Cooking Course" }}</strong><br>
+        provided by Crazy Bites</p>
+        
+        <div class="certificate-footer">
+            <div class="signature">
+                Date: {{ completion_date|date:"F d, Y" }}
+            </div>
+            <div class="signature">
+                Instructor: {{ instructor_name }}
+            </div>
+        </div>
+        <p class="certificate-id">Certificate ID: {{ certificate_id }}</p>
+    </div>
+
+    <div class="text-center action-buttons-container">
+        <div class="mb-3 share-buttons">
+            <span>Share:</span>
+            <a href="https://twitter.com/intent/tweet?text=I%20just%20completed%20the%20{{ course_name|urlencode }}%20course%20at%20Crazy%20Bites!&url={{ request.build_absolute_uri }}" target="_blank" title="Share on Twitter"><i class="fab fa-twitter-square"></i></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" title="Share on Facebook"><i class="fab fa-facebook-square"></i></a>
+            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title=Certificate%20-%20{{ course_name|urlencode }}&summary=I%20completed%20the%20{{ course_name|urlencode }}%20course%20at%20Crazy%20Bites!" target="_blank" title="Share on LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <button onclick="window.print();" class="btn btn-success me-2"> <i class="fas fa-print me-2"></i>Print</button>
+        <a href="{% url 'courses:download_certificate' %}?course={{ course_name|urlencode }}" class="btn btn-warning me-2"> <i class="fas fa-download me-2"></i>Download PDF</a>
+        <a href="{% url 'index' %}" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
+{% endblock %} 

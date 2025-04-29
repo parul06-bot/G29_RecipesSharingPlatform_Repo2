@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ course_name }} - Crazy Bites{% endblock %}
+
+{% block styles %}
+<style>
+    .video-responsive {
+        overflow: hidden;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        position: relative;
+        height: 0;
+        margin-bottom: 1rem; /* Add some space below the video */
+    }
+    .video-responsive iframe {
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        border-radius: 8px; /* Optional: match placeholder style */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="padding-top: 70px !important;">
+    <h1 class="mb-4">{{ course_name }} Videos</h1>
+    
+    <div class="row">
+        {% for video in videos %}
+        <div class="col-md-6">
+            <div class="video-container">
+                <h2>{{ video.title }}</h2>
+                <div class="video-responsive">
+                    <iframe src="{{ video.url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <p class="mt-2">{{ video.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a href="{% url 'index' %}#cooking-classes" class="btn btn-secondary">Back to Courses</a>
+        <a href="{% static 'courses/pdfs/italian_recipes.pdf' %}" class="btn btn-info" target="_blank"> <i class="fas fa-book me-2"></i>Course Material</a> 
+        <a href="{% url 'courses:generate_certificate' %}?course={{ course_name }}" class="btn btn-success"> <i class="fas fa-award me-2"></i>Get Certificate</a>
+    </div>
+</div>
+{% endblock %} 

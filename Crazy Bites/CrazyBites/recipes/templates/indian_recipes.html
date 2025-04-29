@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Recipes - Crazy Bites</title>
+    <link rel="shortcut icon" href="./Images/Logo.jfif" type="image/x-icon" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #f39c12;
+            --text-color: #2c3e50;
+            --light-bg: #f8f9fa;
+            --dark-bg: #1a252f;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--light-bg);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .decorative-header {
+            font-family: 'Dancing Script', cursive;
+            color: var(--secondary-color);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero-section {
+            position: relative;
+            height: 70vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ffffff" fill-opacity="0.1" d="M0,0 L100,0 L100,100 L0,100 Z M10,10 L90,10 L90,90 L10,90 Z"/></svg>');
+            background-size: 50px 50px;
+            opacity: 0.1;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            margin-bottom: 2rem;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .recipe-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+        }
+
+        .recipe-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .recipe-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .recipe-card-content {
+            padding: 2rem;
+            position: relative;
+        }
+
+        .recipe-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            position: relative;
+            display: inline-block;
+        }
+
+        .recipe-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: #f39c12;
+            border-radius: 2px;
+        }
+
+        .recipe-card h4 {
+            color: #2c3e50;
+            margin: 1.5rem 0 1rem;
+            font-size: 1.2rem;
+        }
+
+        .recipe-card ul, .recipe-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .recipe-card li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            color: #666;
+        }
+
+        .recipe-card li::before {
+            content: '•';
+            color: #f39c12;
+            position: absolute;
+            left: -1.5rem;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            border: none;
+            padding: 0.8rem 2rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:hover {
+            background-color: #d68910;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .indian-pattern {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23f39c12" fill-opacity="0.1" d="M0,0 L100,0 L100,100 L0,100 Z M10,10 L90,10 L90,90 L10,90 Z"/></svg>');
+            background-size: 20px 20px;
+            padding: 2rem 0;
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--accent-color);
+            opacity: 0.2;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating-icon:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 20%; right: 10%; animation-delay: 0.5s; }
+        .floating-icon:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 1s; }
+        .floating-icon:nth-child(4) { bottom: 25%; right: 5%; animation-delay: 1.5s; }
+
+        .cultural-section {
+            background: linear-gradient(45deg, #1a252f, #2c3e50);
+            color: white;
+            padding: 5rem 0;
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        .cultural-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ffffff" fill-opacity="0.05" d="M0,0 L100,0 L100,100 L0,100 Z M10,10 L90,10 L90,90 L10,90 Z"/></svg>');
+            background-size: 40px 40px;
+            opacity: 0.1;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.2rem;
+            background: rgba(243, 156, 18, 0.1);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .difficulty {
+            display: inline-flex;
+            gap: 0.3rem;
+        }
+
+        .difficulty-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(243, 156, 18, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-dot.active {
+            background: #f39c12;
+            transform: scale(1.2);
+        }
+
+        .recipe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .recipe-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(44, 62, 80, 0.1);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .recipe-tag:hover {
+            background: rgba(44, 62, 80, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-recipe {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            opacity: 0;
+            transition: all 0.4s ease;
+            background: #f39c12;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-recipe:hover {
+            background: #d68910;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        .recipe-card:hover .btn-recipe {
+            opacity: 1;
+            transform: translateY(-5px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            background: rgba(255,255,255,0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .scroll-indicator i {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+
+        .recipe-card-content {
+            padding: 2rem;
+        }
+
+        .recipe-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            position: relative;
+            display: inline-block;
+        }
+
+        .recipe-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: #f39c12;
+            border-radius: 2px;
+        }
+
+        .recipe-card h4 {
+            color: #2c3e50;
+            margin: 1.5rem 0 1rem;
+            font-size: 1.2rem;
+        }
+
+        .recipe-card ul, .recipe-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .recipe-card li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            color: #666;
+        }
+
+        .recipe-card li::before {
+            content: '•';
+            color: #f39c12;
+            position: absolute;
+            left: -1.5rem;
+            font-weight: bold;
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 1rem;
+            right: 3.5rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .favorite-btn:hover, .wishlist-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .favorite-btn:hover {
+            color: #e74c3c;
+        }
+
+        .wishlist-btn:hover {
+            color: #3498db;
+        }
+
+        .start-cooking-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .recipe-card:hover .start-cooking-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .start-cooking-btn:hover {
+            background-color: #d68910;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <i class="fas fa-pepper-hot floating-icon"></i>
+        <i class="fas fa-utensils floating-icon"></i>
+        <i class="fas fa-mortar-pestle floating-icon"></i>
+        <i class="fas fa-spa floating-icon"></i>
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">Indian Recipes</h1>
+            <p class="decorative-header h2 mb-4">A Spicy Journey Through India</p>
+            <p class="lead">Discover the vibrant flavors of India with our collection of traditional recipes</p>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down fa-2x"></i>
+        </div>
+    </div>
+
+    <!-- Cultural Section -->
+    <section class="cultural-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="cultural-fact">
+                        <i class="fas fa-history"></i>
+                        <h3>Mughal Influence</h3>
+                        <p>Biryani and other rich dishes were shaped by Mughal emperors, blending Persian and Indian flavors.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cultural-fact">
+                        <i class="fas fa-globe"></i>
+                        <h3>Global Favorite</h3>
+                        <p>Butter Chicken, born in Delhi, is now loved worldwide for its creamy, spicy goodness.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cultural-fact">
+                        <i class="fas fa-utensils"></i>
+                        <h3>Street Food Legacy</h3>
+                        <p>Samosas, introduced by traders, are now iconic snacks across India's bustling streets.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+        <div class="indian-pattern mb-5">
+            <div class="text-center mb-5">
+                <h2 class="decorative-header display-4">Traditional Indian Cuisine</h2>
+                <p class="lead">Each recipe tells a story of India's rich culinary heritage</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Dosa Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://www.awesomecuisine.com/wp-content/uploads/2009/06/Plain-Dosa.jpg" alt="Dosa">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Dosa is a South Indian staple, often enjoyed with chutney and sambar.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Dosa</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 30 mins</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot"></span>
+                                </span>
+                                Medium
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Breakfast</span>
+                            <span class="recipe-tag">Vegetarian</span>
+                            <span class="recipe-tag">Healthy</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>2 cups rice</li>
+                            <li>1 cup urad dal</li>
+                            <li>Salt to taste</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Soak rice and dal, blend into batter, ferment overnight.</li>
+                            <li>Spread batter thinly on hot griddle, cook until crispy.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Samosa Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://vegecravings.com/wp-content/uploads/2017/03/Aloo-Samosa-Recipe-Step-By-Step-Instructions.jpg" alt="Samosa">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Samosas were introduced to India by Middle Eastern traders in the 13th century.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Samosa</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 45 mins</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot"></span>
+                                </span>
+                                Medium
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Snack</span>
+                            <span class="recipe-tag">Vegetarian</span>
+                            <span class="recipe-tag">Street Food</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>2 cups all-purpose flour</li>
+                            <li>3 potatoes (boiled and mashed)</li>
+                            <li>1 cup peas</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Knead flour into dough, make cones.</li>
+                            <li>Fill with spiced potato-pea mix, fry until golden.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paneer Tikka Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://carveyourcraving.com/wp-content/uploads/2021/10/paneer-tikka-skewers.jpg" alt="Paneer Tikka">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Paneer Tikka is a popular North Indian appetizer, perfect for parties and gatherings.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Paneer Tikka</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 40 mins</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot"></span>
+                                    <span class="difficulty-dot"></span>
+                                </span>
+                                Easy
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Appetizer</span>
+                            <span class="recipe-tag">Vegetarian</span>
+                            <span class="recipe-tag">Grilled</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>200g paneer (cubed)</li>
+                            <li>1 cup yogurt</li>
+                            <li>Spices as required</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Marinate paneer in spiced yogurt.</li>
+                            <li>Skewer and grill until golden.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Butter Chicken Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://www.indianhealthyrecipes.com/wp-content/uploads/2023/04/butter-chicken-recipe.jpg" alt="Butter Chicken">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Butter Chicken was invented in Delhi in the 1950s and is now a global favorite.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Butter Chicken</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 1 hour</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot"></span>
+                                </span>
+                                Medium
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Main Course</span>
+                            <span class="recipe-tag">Non-Veg</span>
+                            <span class="recipe-tag">Creamy</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>500g chicken</li>
+                            <li>1 cup tomato puree</li>
+                            <li>1/2 cup cream</li>
+                            <li>Spices and herbs</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Marinate and grill chicken.</li>
+                            <li>Simmer in tomato-cream sauce.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Biryani Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://www.indianhealthyrecipes.com/wp-content/uploads/2019/02/hyderabadi-biryani.jpg" alt="Biryani">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Biryani was brought to India by the Mughals and has over 20 regional variations.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Biryani</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 2 hours</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                </span>
+                                Hard
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Main Course</span>
+                            <span class="recipe-tag">Rice Dish</span>
+                            <span class="recipe-tag">Festive</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>2 cups basmati rice</li>
+                            <li>500g meat or vegetables</li>
+                            <li>Spices and herbs</li>
+                            <li>Fried onions</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Marinate meat, par-cook rice.</li>
+                            <li>Layer and cook until aromatic.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gulab Jamun Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://recipes.timesofindia.com/thumb/63799510.cms?width=1200&height=900" alt="Gulab Jamun">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Gulab Jamun is a popular Indian dessert, often served at weddings and festivals.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Gulab Jamun</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 1 hour</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot"></span>
+                                </span>
+                                Medium
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Dessert</span>
+                            <span class="recipe-tag">Sweet</span>
+                            <span class="recipe-tag">Festive</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>1 cup milk powder</li>
+                            <li>1/4 cup all-purpose flour</li>
+                            <li>Sugar syrup</li>
+                            <li>Rosewater</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Make dough, form balls, fry until golden.</li>
+                            <li>Soak in warm sugar syrup.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="text-center py-4">
+        <a href="/" class="btn btn-primary">
+            <i class="fas fa-home me-2"></i>Back to Home
+        </a>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Favorite button functionality
+        document.querySelectorAll('.favorite-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                icon.classList.toggle('far');
+                icon.classList.toggle('fas');
+                icon.classList.toggle('text-danger');
+            });
+        });
+
+        // Wishlist button functionality
+        document.querySelectorAll('.wishlist-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                icon.classList.toggle('far');
+                icon.classList.toggle('fas');
+                icon.classList.toggle('text-primary');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Baking Basics Videos - Crazy Bites{% endblock %}
+
+{% block styles %}
+<style>
+    .video-responsive {
+        overflow: hidden;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        position: relative;
+        height: 0;
+        margin-bottom: 1rem; /* Add some space below the video */
+    }
+    .video-responsive iframe {
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        border-radius: 8px; /* Optional: match placeholder style */
+    }
+    /* Add placeholder style for remaining videos if needed */
+    .video-placeholder {
+        background-color: #e9ecef;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        color: #6c757d;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="padding-top: 70px !important;">
+    <h1 class="mb-4">Baking Basics Videos</h1>
+    
+    <div class="row">
+        <!-- Video 1: Understanding Ingredients -->
+        <div class="col-md-6">
+            <div class="video-container">
+                <h2>Session 1: Understanding Ingredients</h2>
+                <div class="video-responsive">
+                    <iframe src="https://www.youtube.com/embed/bsYzWK3cxOM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <p class="mt-2">Learn about the role of key baking ingredients like flour, sugar, eggs, and butter.</p>
+            </div>
+        </div>
+
+        <!-- Video 2: Mastering Mixing Techniques -->
+        <div class="col-md-6">
+            <div class="video-container">
+                <h2>Session 2: Mastering Mixing Techniques</h2>
+                <div class="video-responsive">
+                    <iframe src="https://www.youtube.com/embed/SMzQvIJkBwE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <p class="mt-2">Discover different mixing methods (creaming, folding, whisking) and when to use them.</p>
+            </div>
+        </div>
+
+        <!-- Video 3: Bread Basics -->
+         <div class="col-md-6">
+            <div class="video-container">
+                <h2>Session 3: Bread Basics</h2>
+                <div class="video-responsive">
+                    <iframe src="https://www.youtube.com/embed/Jizr6LR83Kk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <p class="mt-2">Your first steps into the world of yeast, kneading, and baking basic bread.</p>
+            </div>
+        </div>
+
+         <!-- Video 4: Cookie Chemistry -->
+         <div class="col-md-6">
+            <div class="video-container">
+                <h2>Session 4: Cookie Chemistry</h2>
+                <div class="video-responsive">
+                    <iframe src="https://www.youtube.com/embed/n6wpNhyreDE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <p class="mt-2">Understand how small changes affect cookie texture and taste.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a href="{% url 'index' %}#cooking-classes" class="btn btn-secondary">Back to Courses</a>
+        <a href="{% static 'courses/pdfs/cooking_basics.pdf' %}" class="btn btn-info" target="_blank"> <i class="fas fa-book me-2"></i>Course Material</a> 
+        <a href="{% url 'courses:generate_certificate' %}?course=Baking Basics" class="btn btn-success"> <i class="fas fa-award me-2"></i>Get Certificate</a>
+    </div>
+</div>
+{% endblock %} 

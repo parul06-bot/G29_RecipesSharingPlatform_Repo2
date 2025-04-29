@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Asian Fusion Videos - Crazy Bites{% endblock %}
+
+{% block styles %}
+<style>
+    .video-responsive {
+        overflow: hidden;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        position: relative;
+        height: 0;
+        margin-bottom: 1rem; /* Add some space below the video */
+    }
+    .video-responsive iframe {
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        border-radius: 8px; /* Optional: match placeholder style */
+    }
+    /* Add placeholder style for remaining videos if needed */
+    .video-placeholder {
+        background-color: #e9ecef;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        color: #6c757d;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="padding-top: 70px !important;">
+    <h1 class="mb-4">Asian Fusion Videos</h1>
+    
+    <div class="row">
+        <!-- Video 1: Flavor Balancing Act -->
+        <div class="col-md-6">
+            <div class="video-container">
+                <h2>Session 1: Flavor Balancing Act</h2>
+                <div class="video-responsive">
+                    <iframe src="https://www.youtube.com/embed/sg5zh_cygag" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <p class="mt-2">Understand the core principles of balancing sweet, sour, salty, bitter, and umami in Asian cooking.</p>
+            </div>
+        </div>
+
+        <!-- Video 2: Wok Skills 101 -->
+        <div class="col-md-6">
+            <div class="video-container">
+                <h2>Session 2: Wok Skills 101</h2>
+                <div class="video-responsive">
+                    <iframe src="https://www.youtube.com/embed/7w8JEjsvbjA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <p class="mt-2">Mastering high-heat cooking techniques for perfect stir-fries.</p>
+            </div>
+        </div>
+
+        <!-- Video 3: Sushi Rolling Secrets -->
+         <div class="col-md-6">
+            <div class="video-container">
+                <h2>Session 3: Sushi Rolling Secrets</h2>
+                <div class="video-responsive">
+                    <iframe src="https://www.youtube.com/embed/nIoOv6lWYnk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <p class="mt-2">Learn the art of making beautiful and delicious sushi rolls at home.</p>
+            </div>
+        </div>
+
+         <!-- Video 4: Curry Creations -->
+         <div class="col-md-6">
+            <div class="video-container">
+                <h2>Session 4: Curry Creations</h2>
+                <div class="video-responsive">
+                    <iframe src="https://www.youtube.com/embed/o8xQfv2YDew" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <p class="mt-2">Exploring different types of Asian curries and how to build complex flavors.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a href="{% url 'index' %}#cooking-classes" class="btn btn-secondary">Back to Courses</a>
+        <a href="{% static 'courses/pdfs/asian_recipe.pdf' %}" class="btn btn-info" target="_blank"> <i class="fas fa-book me-2"></i>Course Material</a> 
+        <a href="{% url 'courses:generate_certificate' %}?course=Asian Fusion" class="btn btn-success"> <i class="fas fa-award me-2"></i>Get Certificate</a>
+    </div>
+</div>
+{% endblock %} 

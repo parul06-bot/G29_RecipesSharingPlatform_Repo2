@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - Crazy Bites</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/Logo.jfif') }}" type="image/x-icon" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #f39c12;
+            --text-color: #2c3e50;
+            --light-bg: #f8f9fa;
+            --dark-bg: #1a252f;
+            --nav-bg: #1a252f;
+            --footer-bg: #1a252f;
+            --gradient-dark: linear-gradient(135deg, #1a252f, #2c3e50);
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --hover-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--light-bg);
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--gradient-dark) !important;
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-brand img {
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover img {
+            transform: rotate(10deg);
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .dashboard-container {
+            padding: 2rem 0;
+        }
+
+        .search-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .search-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-dark);
+        }
+
+        .search-form {
+            position: relative;
+            margin-bottom: 0;
+        }
+
+        .search-input {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1rem 1.2rem 1rem 3rem;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(243, 156, 18, 0.15);
+            transform: translateY(-2px);
+            background-color: white;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus + .search-icon {
+            color: var(--accent-color);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 1rem 0;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+        }
+
+        .recipe-image-container {
+            flex: 0 0 40%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.4s ease;
+        }
+
+        .recipe-content {
+            flex: 0 0 60%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .recipe-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            line-height: 1.2;
+        }
+
+        .recipe-description {
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .recipe-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .recipe-meta i {
+            color: var(--accent-color);
+            margin-right: 0.5rem;
+        }
+
+        .btn-view {
+            background: var(--gradient-dark);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: fit-content;
+            font-size: 0.9rem;
+        }
+
+        .btn-view:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3);
+            color: white;
+        }
+
+        .btn-view i {
+            transition: transform 0.3s ease;
+            font-size: 0.9em;
+            margin-left: 0.3rem;
+        }
+
+        .btn-view:hover i {
+            transform: translateX(5px);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-top: 2rem;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .no-results .btn-view {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .no-results .btn-view i {
+            font-size: 0.75em;
+            margin-left: 0.3rem;
+            vertical-align: middle;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .recipe-card {
+            animation: fadeIn 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .recipe-card:nth-child(1) { animation-delay: 0.1s; }
+        .recipe-card:nth-child(2) { animation-delay: 0.2s; }
+        .recipe-card:nth-child(3) { animation-delay: 0.3s; }
+        .recipe-card:nth-child(4) { animation-delay: 0.4s; }
+        .recipe-card:nth-child(5) { animation-delay: 0.5s; }
+
+        .footer {
+            background: var(--gradient-dark);
+            color: white;
+            padding: 2.5rem 0;
+            text-align: center;
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .recipe-card {
+                flex-direction: column;
+            }
+
+            .recipe-image-container {
+                flex: 0 0 250px;
+            }
+
+            .recipe-content {
+                flex: 1;
+                padding: 1.5rem;
+            }
+
+            .recipe-title {
+                font-size: 1.8rem;
+            }
+            
+            .btn-view {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/Logo.jfif') }}" alt="Crazy Bites Logo" height="45">
+                Crazy Bites
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('aboutus') }}">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('view_recipes') }}">View Recipes</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <div class="container">
+            <div class="search-card">
+                <form method="get" action="{{ url_for('search') }}" class="search-form">
+                    <input type="text" class="search-input" name="query" placeholder="Search for recipes..." value="{{ query }}" required>
+                    <i class="fas fa-search search-icon"></i>
+                </form>
+            </div>
+
+            {% if recipes %}
+                <h3 class="mb-4">Search Results for "{{ query }}"</h3>
+                <div class="recipe-grid">
+                    {% for recipe in recipes %}
+                        <div class="recipe-card">
+                            <div class="recipe-image-container">
+                                <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}" class="recipe-image">
+                            </div>
+                            <div class="recipe-content">
+                                <h4 class="recipe-title">{{ recipe.name }}</h4>
+                                <p class="recipe-description">{{ recipe.description }}</p>
+                                <div class="recipe-meta">
+                                    <span><i class="fas fa-clock"></i> {{ recipe.prep_time }} min</span>
+                                    <span><i class="fas fa-utensils"></i> {{ recipe.cuisine }}</span>
+                                    <span><i class="fas fa-user"></i> {{ recipe.servings }} servings</span>
+                                </div>
+                                <a href="{{ url_for('view_recipe', recipe_id=recipe.id) }}" class="btn btn-view">
+                                    View Recipe <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-results">
+                    <i class="fas fa-search"></i>
+                    <h3>No recipes found</h3>
+                    <p class="text-muted">Try different keywords or browse our recipe collection</p>
+                    <a href="{{ url_for('view_recipes') }}" class="btn btn-view mt-3">
+                        Browse Recipes <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="mb-0">COPYRIGHT © Crazy Bites ®</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

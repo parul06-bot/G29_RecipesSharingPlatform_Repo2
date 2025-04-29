@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinese Recipes - Crazy Bites</title>
+    <link rel="shortcut icon" href="./Images/Logo.jfif" type="image/x-icon" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #f39c12;
+            --text-color: #2c3e50;
+            --light-bg: #f8f9fa;
+            --dark-bg: #1a252f;
+            --cream-bg: #fdf6e3;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--light-bg);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .decorative-header {
+            font-family: 'Dancing Script', cursive;
+            color: var(--secondary-color);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero-section {
+            position: relative;
+            height: 70vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ffffff" fill-opacity="0.1" d="M0,0 L100,0 L100,100 L0,100 Z M10,10 L90,10 L90,90 L10,90 Z"/></svg>');
+            background-size: 50px 50px;
+            opacity: 0.1;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            margin-bottom: 2rem;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .recipe-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+        }
+
+        .recipe-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .recipe-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .recipe-card-content {
+            padding: 2rem;
+            position: relative;
+        }
+
+        .recipe-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            position: relative;
+            display: inline-block;
+        }
+
+        .recipe-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: #f39c12;
+            border-radius: 2px;
+        }
+
+        .recipe-card h4 {
+            color: #2c3e50;
+            margin: 1.5rem 0 1rem;
+            font-size: 1.2rem;
+        }
+
+        .recipe-card ul, .recipe-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .recipe-card li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            color: #666;
+        }
+
+        .recipe-card li::before {
+            content: '•';
+            color: #f39c12;
+            position: absolute;
+            left: -1.5rem;
+            font-weight: bold;
+        }
+
+        /* Flip Card Styles */
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            height: 250px;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .recipe-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .flip-card-front {
+            background-color: #bbb;
+        }
+
+        .flip-card-back {
+            background-color: rgba(44, 62, 80, 0.9);
+            color: white;
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .start-cooking-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .recipe-card:hover .start-cooking-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .start-cooking-btn:hover {
+            background-color: #d68910;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        .mexican-pattern {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23f39c12" fill-opacity="0.1" d="M0,0 L100,0 L100,100 L0,100 Z M10,10 L90,10 L90,90 L10,90 Z"/></svg>');
+            background-size: 20px 20px;
+            padding: 2rem 0;
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--accent-color);
+            opacity: 0.2;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating-icon:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 20%; right: 10%; animation-delay: 0.5s; }
+        .floating-icon:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 1s; }
+        .floating-icon:nth-child(4) { bottom: 25%; right: 5%; animation-delay: 1.5s; }
+
+        .cultural-section {
+            background: linear-gradient(45deg, #1a252f, #2c3e50);
+            color: white;
+            padding: 5rem 0;
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        .cultural-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ffffff" fill-opacity="0.05" d="M0,0 L100,0 L100,100 L0,100 Z M10,10 L90,10 L90,90 L10,90 Z"/></svg>');
+            background-size: 40px 40px;
+            opacity: 0.1;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.2rem;
+            background: rgba(243, 156, 18, 0.1);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .difficulty {
+            display: inline-flex;
+            gap: 0.3rem;
+        }
+
+        .difficulty-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(243, 156, 18, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-dot.active {
+            background: #f39c12;
+            transform: scale(1.2);
+        }
+
+        .recipe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .recipe-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(44, 62, 80, 0.1);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .recipe-tag:hover {
+            background: rgba(44, 62, 80, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-recipe {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            opacity: 0;
+            transition: all 0.4s ease;
+            background: #f39c12;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-recipe:hover {
+            background: #d68910;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        .recipe-card:hover .btn-recipe {
+            opacity: 1;
+            transform: translateY(-5px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            background: rgba(255,255,255,0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .scroll-indicator i {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+
+        .recipe-card-content {
+            padding: 2rem;
+        }
+
+        .recipe-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            position: relative;
+            display: inline-block;
+        }
+
+        .recipe-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: #f39c12;
+            border-radius: 2px;
+        }
+
+        .recipe-card h4 {
+            color: #2c3e50;
+            margin: 1.5rem 0 1rem;
+            font-size: 1.2rem;
+        }
+
+        .recipe-card ul, .recipe-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .recipe-card li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            color: #666;
+        }
+
+        .recipe-card li::before {
+            content: '•';
+            color: #f39c12;
+            position: absolute;
+            left: -1.5rem;
+            font-weight: bold;
+        }
+
+        .cuisine-header {
+            background-color: var(--cream-bg);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .cuisine-header h2 {
+            color: #e74c3c;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cuisine-header p {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">Chinese Recipes</h1>
+            <p class="decorative-header h2 mb-4">A Culinary Journey to China</p>
+            <p class="lead">Discover the authentic flavors of China with our collection of traditional recipes</p>
+        </div>
+        <i class="fas fa-bowl-rice floating-icon"></i>
+        <i class="fas fa-mortar-pestle floating-icon"></i>
+        <i class="fas fa-wheat-awn floating-icon"></i>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down fa-2x"></i>
+        </div>
+    </section>
+
+    <!-- Cultural Section -->
+    <section class="cultural-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="cultural-fact">
+                        <i class="fas fa-history"></i>
+                        <h3>Ancient Roots</h3>
+                        <p>Chinese cuisine dates back to the Shang Dynasty, with a history spanning over 3,000 years.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cultural-fact">
+                        <i class="fas fa-globe-asia"></i>
+                        <h3>UNESCO Heritage</h3>
+                        <p>Chinese cuisine is recognized for its diverse regional flavors and cooking techniques.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cultural-fact">
+                        <i class="fas fa-pepper-hot"></i>
+                        <h3>Spice Diversity</h3>
+                        <p>Chinese cuisine features a perfect balance of five flavors: sweet, sour, bitter, spicy, and salty.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+        <div class="cuisine-header">
+            <h2>Traditional Chinese Cuisine</h2>
+            <p>Each recipe tells a story of China's rich culinary heritage</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Kung Pao Chicken Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://media.istockphoto.com/id/1304771356/photo/beef-leg-slice-with-marrow-italian-menu-braised-veal-steak-ossobuco-alla-milanese-with.jpg?s=612x612&w=0&k=20&c=47Jdgd5pFFaTBpWaoGu8pO-tBGqdcH-XAJcGcC_j06E=" alt="Kung Pao Chicken">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Kung Pao Chicken is a famous Sichuan dish known for its spicy and sweet flavors.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Kung Pao Chicken</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 30 mins</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot"></span>
+                                </span>
+                                Medium
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Main Course</span>
+                            <span class="recipe-tag">Spicy</span>
+                            <span class="recipe-tag">Stir-fry</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>500g chicken (cubed)</li>
+                            <li>1/2 cup peanuts</li>
+                            <li>3 dried red chilies</li>
+                            <li>1/4 cup soy sauce</li>
+                            <li>1 tbsp cornstarch</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Marinate chicken with soy sauce and cornstarch.</li>
+                            <li>Stir-fry chicken with chilies and peanuts.</li>
+                            <li>Serve hot with steamed rice.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mapo Tofu Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://img.freepik.com/premium-photo/pasta-spaghetti-carbonara-plate-black-background-generative-ai_74760-2095.jpg" alt="Mapo Tofu">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Mapo Tofu is a classic Sichuan dish known for its numbing and spicy flavors.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Mapo Tofu</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 25 mins</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot"></span>
+                                    <span class="difficulty-dot"></span>
+                                </span>
+                                Easy
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Main Course</span>
+                            <span class="recipe-tag">Vegetarian</span>
+                            <span class="recipe-tag">Spicy</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>400g tofu (cubed)</li>
+                            <li>200g minced pork</li>
+                            <li>2 tbsp chili bean paste</li>
+                            <li>1 cup chicken broth</li>
+                            <li>1 tbsp Sichuan peppercorns</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Stir-fry pork with chili bean paste.</li>
+                            <li>Add broth and tofu, simmer for 5 minutes.</li>
+                            <li>Garnish with Sichuan peppercorns and serve.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Peking Duck Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://media.istockphoto.com/id/1045283212/photo/tasty-pasta-with-pesto-served-on-plate.jpg?s=612x612&w=0&k=20&c=eIQbBIM37oiPwmdbmWn11_W4nKlpEhz9ms2gYEBkBYs=" alt="Peking Duck">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Peking Duck is a famous dish from Beijing, traditionally served with thin pancakes.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Peking Duck</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 2 hours</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                </span>
+                                Hard
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Main Course</span>
+                            <span class="recipe-tag">Festive</span>
+                            <span class="recipe-tag">Special Occasion</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>1 whole duck</li>
+                            <li>2 tbsp honey</li>
+                            <li>1/4 cup soy sauce</li>
+                            <li>Chinese pancakes</li>
+                            <li>Green onions and hoisin sauce</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Marinate duck with honey and soy sauce.</li>
+                            <li>Roast at 200°C until crispy.</li>
+                            <li>Serve in pancakes with hoisin sauce.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chinese Fried Rice Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://img.freepik.com/premium-photo/tiramisu-cake-dark-black-background-studio-photo-generative-ai_74760-1750.jpg" alt="Chinese Fried Rice">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Fried rice is a great way to use leftover rice and create a delicious meal.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Chinese Fried Rice</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 20 mins</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot"></span>
+                                    <span class="difficulty-dot"></span>
+                                </span>
+                                Easy
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Main Course</span>
+                            <span class="recipe-tag">Quick</span>
+                            <span class="recipe-tag">Versatile</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>2 cups cooked rice</li>
+                            <li>1/2 cup mixed vegetables</li>
+                            <li>2 eggs</li>
+                            <li>2 tbsp soy sauce</li>
+                            <li>1 tbsp sesame oil</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Scramble eggs and set aside.</li>
+                            <li>Stir-fry rice with vegetables and soy sauce.</li>
+                            <li>Add eggs, mix well, and serve.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dim Sum Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://media.istockphoto.com/id/686957124/photo/pizza-margherita.jpg?s=612x612&w=0&k=20&c=STQALvMIjcgXPIvpXXUXItAl05QtbmEUQ_PfwSato48=" alt="Dim Sum">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Dim Sum means "touch the heart" and is traditionally served with tea.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Dim Sum</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 45 mins</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot"></span>
+                                </span>
+                                Medium
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Appetizer</span>
+                            <span class="recipe-tag">Steamed</span>
+                            <span class="recipe-tag">Traditional</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>1 cup minced pork/shrimp</li>
+                            <li>Wonton wrappers</li>
+                            <li>Ginger and soy sauce</li>
+                            <li>2 tbsp soy sauce</li>
+                            <li>1 tbsp sesame oil</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Fill wrappers with meat mixture.</li>
+                            <li>Steam for 10 minutes.</li>
+                            <li>Serve with soy sauce.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spring Rolls Recipe -->
+            <div class="col-md-6 col-lg-4">
+                <div class="recipe-card">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://www.shutterstock.com/image-photo/lasagna-mince-beef-meat-tomato-260nw-1911171904.jpg" alt="Spring Rolls">
+                            </div>
+                            <div class="flip-card-back">
+                                <p>Did you know? Spring rolls are traditionally eaten during Chinese New Year celebrations.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recipe-card-content">
+                        <h3>Spring Rolls</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item"><i class="fas fa-clock"></i> 30 mins</span>
+                            <span class="meta-item">
+                                <span class="difficulty">
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot active"></span>
+                                    <span class="difficulty-dot"></span>
+                                </span>
+                                Medium
+                            </span>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="recipe-tag">Appetizer</span>
+                            <span class="recipe-tag">Fried</span>
+                            <span class="recipe-tag">Festive</span>
+                        </div>
+                        <h4>Ingredients</h4>
+                        <ul>
+                            <li>1 cup shredded cabbage</li>
+                            <li>1/2 cup carrots (grated)</li>
+                            <li>Spring roll wrappers</li>
+                            <li>2 tbsp soy sauce</li>
+                            <li>Oil for frying</li>
+                        </ul>
+                        <h4>Instructions</h4>
+                        <ol>
+                            <li>Fill wrappers with vegetables.</li>
+                            <li>Roll tightly and deep fry.</li>
+                            <li>Serve hot with dipping sauce.</li>
+                        </ol>
+                        <a href="/#cooking-classes" class="start-cooking-btn">Start Cooking</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="text-center py-4">
+        <a href="/" class="btn btn-primary">
+            <i class="fas fa-home me-2"></i>Back to Home
+        </a>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle smooth scrolling for Start Cooking buttons
+            document.querySelectorAll('.start-cooking-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    const targetId = href.split('#')[1];
+                    
+                    // First navigate to the home page if we're not there
+                    if (window.location.pathname !== '/') {
+                        window.location.href = '/#' + targetId;
+                    } else {
+                        // If we're already on the home page, just scroll to the section
+                        const targetElement = document.getElementById(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

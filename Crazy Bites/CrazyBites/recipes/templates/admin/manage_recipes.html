@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Manage Recipes</h1>
+        <a href="{% url 'add_recipe' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Recipe
+        </a>
+    </div>
+
+    {% if messages %}
+    <div class="messages mb-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Recipe Name</th>
+                            <th>Cuisine</th>
+                            <th>Created By</th>
+                            <th>Date Added</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for recipe in recipes %}
+                        <tr>
+                            <td>
+                                {% if recipe.image %}
+                                    <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}" class="recipe-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                {% else %}
+                                    <img src="{% static 'images/t.jpg' %}" alt="{{ recipe.name }}" class="recipe-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                {% endif %}
+                                {{ recipe.name }}
+                            </td>
+                            <td>{{ recipe.cuisine }}</td>
+                            <td>{{ recipe.created_by.username }}</td>
+                            <td>{{ recipe.created_at|date:"M d, Y" }}</td>
+                            <td>
+                                <span class="badge {% if recipe.is_published %}bg-success{% else %}bg-warning{% endif %}">
+                                    {% if recipe.is_published %}Published{% else %}Draft{% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'view_recipes' %}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                    <a href="{% url 'recipe_update' recipe.id %}" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a href="{% url 'toggle_recipe_status' recipe.id %}" class="btn btn-sm {% if recipe.is_published %}btn-secondary{% else %}btn-success{% endif %}">
+                                        {% if recipe.is_published %}
+                                        <i class="fas fa-eye-slash"></i> Unpublish
+                                        {% else %}
+                                        <i class="fas fa-eye"></i> Publish
+                                        {% endif %}
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRecipeModal{{ recipe.id }}">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+
+                                <!-- Delete Modal -->
+                                <div class="modal fade" id="deleteRecipeModal{{ recipe.id }}" tabindex="-1" aria-labelledby="deleteRecipeModalLabel{{ recipe.id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteRecipeModalLabel{{ recipe.id }}">Confirm Delete</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete the recipe "{{ recipe.name }}"?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <form action="{% url 'delete_recipe' recipe.id %}" method="post" class="d-inline">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">No recipes found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-hide alerts after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    });
+</script>
+{% endblock %} 

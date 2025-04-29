@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Generate Certificate - Crazy Bites{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="padding-top: 70px !important;">
+    <h1 class="mb-4 text-center">Generate Your Certificate</h1>
+    <p class="text-center mb-4">Congratulations on completing the course! Enter your name as you'd like it to appear on the certificate.</p>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %} {# Important for security #}
+                        <div class="mb-3">
+                            <label for="nameOnCertificate" class="form-label">Name for Certificate:</label>
+                            <input type="text" class="form-control" id="nameOnCertificate" name="user_name" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Generate Certificate</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

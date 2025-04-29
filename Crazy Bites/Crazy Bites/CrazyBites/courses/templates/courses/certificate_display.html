@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Certificate - {{ course_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .certificate-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .certificate {
+        border: 20px solid #f8f9fa;
+        padding: 40px;
+        text-align: center;
+        background: white;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .certificate-header h1 {
+        color: #2c3e50;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+    .subtitle {
+        color: #7f8c8d;
+        font-size: 1.2em;
+    }
+    .student-name {
+        color: #2c3e50;
+        font-size: 2em;
+        margin: 20px 0;
+    }
+    .course-name {
+        color: #e74c3c;
+        font-size: 1.8em;
+        margin: 15px 0;
+    }
+    .completion-text {
+        color: #7f8c8d;
+        font-size: 1.1em;
+        margin: 10px 0;
+    }
+    .certificate-footer {
+        margin-top: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+    .signature-line {
+        text-align: left;
+    }
+    .instructor-name {
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+    .instructor-title {
+        color: #7f8c8d;
+    }
+    .completion-date, .certificate-id {
+        text-align: right;
+        color: #7f8c8d;
+    }
+    .action-buttons-container {
+        margin-top: 30px;
+    }
+    .share-buttons a {
+        font-size: 1.5em;
+        margin: 0 5px;
+        color: #2c3e50;
+    }
+    .share-buttons a:hover {
+        color: #e74c3c;
+    }
+    @media print {
+        .action-buttons-container {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="certificate-container">
+        <div class="certificate">
+            <div class="certificate-header">
+                <h1>Certificate of Completion</h1>
+                <p class="subtitle">This is to certify that</p>
+            </div>
+
+            <div class="certificate-body">
+                <h2 class="student-name">{{ user_name }}</h2>
+                <p class="completion-text">has successfully completed the</p>
+                <h3 class="course-name">{{ course_name }}</h3>
+                <p class="completion-text">course at Crazy Bites.</p>
+            </div>
+
+            <div class="certificate-footer">
+                <div class="signature-line">
+                    <p class="instructor-name">{{ instructor_name }}</p>
+                    <p class="instructor-title">Instructor</p>
+                </div>
+                <div class="completion-date">
+                    <p>Completed on: {{ completion_date|date:"F d, Y" }}</p>
+                </div>
+                <div class="certificate-id">
+                    <p>Certificate ID: {{ certificate_id }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center action-buttons-container">
+        <div class="mb-3 share-buttons">
+            <span>Share:</span>
+            <a href="https://twitter.com/intent/tweet?text=I%20just%20completed%20the%20{{ course_name|urlencode }}%20course%20at%20Crazy%20Bites!&url={{ request.build_absolute_uri }}" target="_blank" title="Share on Twitter"><i class="fab fa-twitter-square"></i></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" title="Share on Facebook"><i class="fab fa-facebook-square"></i></a>
+            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title=Certificate%20-%20{{ course_name|urlencode }}&summary=I%20completed%20the%20{{ course_name|urlencode }}%20course%20at%20Crazy%20Bites!" target="_blank" title="Share on LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <button onclick="window.print();" class="btn btn-success me-2"> <i class="fas fa-print me-2"></i>Print</button>
+        <a href="{% url 'index' %}" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
+{% endblock %} 

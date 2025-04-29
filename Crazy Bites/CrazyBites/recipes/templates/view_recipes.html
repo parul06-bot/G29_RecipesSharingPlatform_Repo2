@@ -1,0 +1,433 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}View Recipes - Crazy Bites{% endblock %}
+
+{% block content %}
+<!-- Add CSRF Token -->
+{% csrf_token %}
+
+<div class="main-content">
+    <div class="container">
+        <div class="filter-buttons">
+            <a href="{% url 'view_recipes' %}" class="btn-filter {% if not filter_type %}active{% endif %}">
+                <i class="fas fa-th"></i> All Recipes
+            </a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'view_recipes' %}?filter=liked" class="btn-filter {% if filter_type == 'liked' %}active{% endif %}">
+                <i class="fas fa-heart"></i> Liked Recipes
+            </a>
+            <a href="{% url 'view_recipes' %}?filter=wishlist" class="btn-filter {% if filter_type == 'wishlist' %}active{% endif %}">
+                <i class="fas fa-bookmark"></i> Wishlist
+            </a>
+            {% endif %}
+        </div>
+
+        <div class="filter-card">
+            <form method="GET" action="{% url 'view_recipes' %}" class="filter-form">
+                <input type="text" class="filter-input" name="search" placeholder="Search recipes..." value="{{ request.GET.search }}">
+                <button type="submit" class="filter-btn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+        </div>
+
+        {% if recipes %}
+            <div class="recipe-grid">
+                {% for recipe in recipes %}
+                    <div class="recipe-card">
+                        <div class="recipe-image">
+                            {% if recipe.image %}
+                                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe-image">
+                            {% else %}
+                                <img src="{% static 'images/default-recipe.jpg' %}" alt="{{ recipe.title }}" class="recipe-image">
+                            {% endif %}
+                        </div>
+                        <div class="recipe-content">
+                            <h4 class="recipe-title">{{ recipe.title }}</h4>
+                            <p class="recipe-description">{{ recipe.description }}</p>
+                            <div class="recipe-meta">
+                                <span><i class="fas fa-utensils"></i> {{ recipe.cuisine }}</span>
+                                <span><i class="fas fa-clock"></i> {{ recipe.meal_type }}</span>
+                                <span><i class="fas fa-user"></i> By {{ recipe.created_by.username }}</span>
+                            </div>
+                            <div class="recipe-actions">
+                                <a href="{% url 'recipe_detail' pk=recipe.id %}" class="btn btn-view">
+                                    View Recipe <i class="fas fa-arrow-right"></i>
+                                </a>
+                                {% if user.is_authenticated %}
+                                <button class="btn-like {% if recipe.id in liked_recipes %}active{% endif %}" data-recipe-id="{{ recipe.id }}">
+                                    <i class="fas fa-heart"></i>
+                                    <span class="like-count">{{ recipe.likes.count }}</span>
+                                </button>
+                                <button class="btn-wishlist {% if recipe.id in wishlist_recipes %}active{% endif %}" data-recipe-id="{{ recipe.id }}">
+                                    <i class="fas fa-bookmark"></i>
+                                    <span class="wishlist-count">{{ recipe.in_wishlists.count }}</span>
+                                </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-recipes">
+                <i class="fas fa-utensils"></i>
+                <h3>No recipes found</h3>
+                <p class="text-muted">Try different search terms or check back later</p>
+                <a href="{% url 'share_recipe' %}" class="btn btn-view">
+                    Share a Recipe <i class="fas fa-plus"></i>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .filter-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+    }
+
+    .btn-filter {
+        background: white;
+        color: var(--primary-color);
+        border: 2px solid #e9ecef;
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+    .btn-filter:hover, .btn-filter.active {
+        background: var(--accent-color);
+        color: white;
+        border-color: var(--accent-color);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(243, 156, 18, 0.3);
+    }
+
+    .btn-filter i {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-filter:hover i {
+        transform: scale(1.2);
+    }
+
+    .filter-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        transition: all 0.4s ease;
+    }
+
+    .filter-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--hover-shadow);
+    }
+
+    .filter-form {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .filter-input {
+        flex: 1;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #f8f9fa;
+    }
+
+    .filter-input:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.25rem rgba(243, 156, 18, 0.15);
+        transform: translateY(-2px);
+        background-color: white;
+    }
+
+    .filter-btn {
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .filter-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(243, 156, 18, 0.3);
+    }
+
+    .filter-btn i {
+        transition: transform 0.3s ease;
+    }
+
+    .filter-btn:hover i {
+        transform: rotate(90deg);
+    }
+
+    .recipe-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 1rem 0;
+    }
+
+    .recipe-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        transition: all 0.4s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .recipe-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--hover-shadow);
+    }
+
+    .recipe-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: all 0.4s ease;
+    }
+
+    .recipe-card:hover .recipe-image {
+        transform: scale(1.05);
+    }
+
+    .recipe-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .recipe-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .recipe-card:hover .recipe-title {
+        color: var(--accent-color);
+    }
+
+    .recipe-description {
+        color: #6c757d;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .recipe-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .recipe-meta i {
+        color: var(--accent-color);
+    }
+
+    .recipe-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        align-items: center;
+    }
+
+    .btn-view {
+        background: var(--gradient-dark);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-view:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3);
+        color: white;
+    }
+
+    .btn-view i {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-view:hover i {
+        transform: translateX(5px);
+    }
+
+    .no-recipes {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--card-shadow);
+        margin-top: 2rem;
+    }
+
+    .no-recipes i {
+        font-size: 4rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+    }
+
+    @keyframes fadeIn {
+        from { 
+            opacity: 0; 
+            transform: translateY(30px); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+    }
+
+    .recipe-card {
+        animation: fadeIn 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .recipe-card:nth-child(1) { animation-delay: 0.1s; }
+    .recipe-card:nth-child(2) { animation-delay: 0.2s; }
+    .recipe-card:nth-child(3) { animation-delay: 0.3s; }
+    .recipe-card:nth-child(4) { animation-delay: 0.4s; }
+    .recipe-card:nth-child(5) { animation-delay: 0.5s; }
+
+    @media (max-width: 768px) {
+        .filter-form {
+            flex-direction: column;
+        }
+        
+        .filter-input {
+            width: 100%;
+        }
+        
+        .filter-btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .recipe-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .recipe-image {
+            height: 180px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Like button functionality
+    document.querySelectorAll('.btn-like').forEach(button => {
+        button.addEventListener('click', function() {
+            const recipeId = this.dataset.recipeId;
+            const likeCount = this.querySelector('.like-count');
+            
+            fetch(`/recipe/${recipeId}/like/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_liked) {
+                    this.classList.add('active');
+                } else {
+                    this.classList.remove('active');
+                }
+                likeCount.textContent = data.likes_count;
+            });
+        });
+    });
+
+    // Wishlist button functionality
+    document.querySelectorAll('.btn-wishlist').forEach(button => {
+        button.addEventListener('click', function() {
+            const recipeId = this.dataset.recipeId;
+            const wishlistCount = this.querySelector('.wishlist-count');
+            
+            fetch(`/recipe/${recipeId}/wishlist/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_wishlisted) {
+                    this.classList.add('active');
+                } else {
+                    this.classList.remove('active');
+                }
+                wishlistCount.textContent = data.wishlist_count;
+            });
+        });
+    });
+
+    // Function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
+{% endblock %}
